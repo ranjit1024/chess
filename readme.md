@@ -22,7 +22,6 @@
 *   **Styling**: Tailwind CSS, Headless UI (for accessible components)
 *   **Real-time**: WebRTC (Video), Socket.io (Game Moves)
 *   **Game Logic**: `chess.js` (Rules), `react-chessboard` (UI)
-*   **State Management**: Zustand
 
 ## 🚀 Getting Started
 
@@ -35,6 +34,7 @@ Ensure you have Node.js 18+ installed.
     ```
     git clone https://github.com/yourusername/facecheck.git
     cd facecheck
+    cd front-end
     ```
 
 2.  **Install dependencies**
@@ -52,18 +52,7 @@ Ensure you have Node.js 18+ installed.
 4.  **Open in Browser**
     Visit `http://localhost:3000` to see the application.
 
-## 📂 Project Structure
 
-facecheck/
-├── components/
-│ ├── Landing/ # Hero, Features, and Footer sections
-│ ├── Game/ # Chessboard and Move History
-│ └── Video/ # WebRTC Video components (Self/Opponent)
-├── app/
-│ ├── page.tsx # Main Landing Page (Soft UI Version)
-│ └── play/ # Game Room Route
-├── public/ # Static assets and icons
-└── lib/ # Utility functions (socket client, peer connection)
 
 
 ## 🧩 Key Components
