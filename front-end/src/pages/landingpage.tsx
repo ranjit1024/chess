@@ -1,6 +1,7 @@
 import React from 'react';
-
+import { useNavigate } from 'react-router-dom';
 const ModernLandingPage = () => {
+  const navigation = useNavigate();
   return (
     <div className="min-h-screen bg-[#050505] text-white font-sans selection:bg-indigo-500/30 selection:text-indigo-200 overflow-x-hidden">
       
@@ -43,8 +44,10 @@ const ModernLandingPage = () => {
           </p>
 
           <div className="flex justify-center gap-4">
-            <button className="group relative px-8 py-4 bg-white text-black rounded-xl font-semibold overflow-hidden">
-              <div className="absolute hover:curspo inset-0 bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-500 opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
+            <button onClick={()=>{
+              navigation("/play")
+            }} className="group relative px-8 py-4 bg-white hover:bg-gradient-to-r hover:from-indigo-500 hover:via-purple-500 hover:to-indigo-500 text-black rounded-xl font-semibold overflow-hidden">
+              <div className="absolute   inse t-0  opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
               Play Game
             </button>
             
