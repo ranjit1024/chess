@@ -2,7 +2,6 @@ import WebSocket from "ws";
 
 import { INIT_GAME, MOVE } from "./messages";
 import { Game } from "./game";
-import { th } from "zod/v4/locales";
 
 export class Gamermanger {
     private games: Game[];
