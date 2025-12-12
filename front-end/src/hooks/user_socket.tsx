@@ -1,21 +1,21 @@
-import { use, useEffect, useReducer, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export function UseSocket(){
-    const socketRef = useRef<WebSocket|null>(null);
+    const [socket,setScoket] = useState<WebSocket|null>(null);
     useEffect(()=> {
         const ws = new WebSocket('ws://localhost:8080');
         ws.onopen = () =>{
-            socketRef.current = ws;
+            setScoket(ws)
         }
         ws.onclose = () =>{
-            socketRef.current = null;
+            setScoket(null)
         }
         return ()=>{
             ws.close()
         }
 
     },[])
-    return socketRef.current
+    return socket;
 }
 
 
