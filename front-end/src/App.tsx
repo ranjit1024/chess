@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import LandingPage from './pages/landingpage'
-import Chess from "./pages/paly";
+import Chess from "./pages/chess";
 
 function App() {
   return <div>
