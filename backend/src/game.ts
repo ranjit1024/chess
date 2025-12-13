@@ -62,7 +62,8 @@ export class Game {
         }
         const opponent = (socket === this.player1) ? this.player2 : this.player1;
         if(opponent){
-            console.log("Inside 1")
+            console.log("Inside 1");
+            console.log(move)
             opponent.send(JSON.stringify({
                 type:MOVE,
                 payload:move
