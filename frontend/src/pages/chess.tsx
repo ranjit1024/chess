@@ -1,14 +1,12 @@
-import { Chessboard } from "react-chessboard";
-
-export function Chess(){
-    return <div className="p-5 bg-gray-900 md:grid md:grid-cols-2 gap-5">
-        <div className="">
-
-            <Chessboard/>
-        </div>
-        <div className="text-white max-md:hidden p-5 bg-gray-800 rounded ">
-            fdsf
-        </div>
-
+import { SidePanel } from "@/component/dsidepanel";
+import { ChessBoard } from "@/component/dummyChess";
+export  function Chess() {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-zinc-950 via-zinc-900 to-black text-zinc-100 flex items-center justify-center p-6">
+      <div className="flex w-full max-w-7xl gap-8">
+        <ChessBoard />
+        <SidePanel />
+      </div>
     </div>
+  );
 }

@@ -1,5 +1,7 @@
 import { Chessboard } from "react-chessboard";
+import { useNavigate } from "react-router-dom";
 export default function Landing() {
+  const router = useNavigate()
   return (
     <main className="bg-zinc-950 text-zinc-100">
 
@@ -25,7 +27,9 @@ export default function Landing() {
             </p>
 
             <div className="mt-10 flex gap-4">
-              <button className="px-7 py-4 rounded-lg bg-indigo-600 hover:bg-indigo-500 transition font-medium">
+              <button onClick={()=>{
+                router("/chess")
+              }} className="px-7 py-4 rounded-lg bg-indigo-600 hover:bg-indigo-500 transition font-medium">
                 Start playing
               </button>
               <button className="px-7 py-4 rounded-lg border border-zinc-800 hover:bg-zinc-900 transition">
