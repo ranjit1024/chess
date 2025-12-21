@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@types/react-router-dom": "^5.3.3",
+    "@types/uuid": "^11.0.0",
     "bun-plugin-tailwind": "^0.1.2",
     "chess.js": "^1.4.0",
     "react": "^19",
