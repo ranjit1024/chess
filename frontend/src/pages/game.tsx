@@ -5,7 +5,7 @@ import { useSocket } from "../hooks/useScoket";
 
 export default function Game() {
     const [game, setGame] = useState(new Chess());
-    const [color, setColor] = useState<"white" | "black" | null>(null);
+    const [color, setColor] = useState<"white" | "black" | undefined>(undefined);
 
     const socket = useSocket((msg) => {
         if (msg.type === "START") {
