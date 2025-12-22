@@ -33,8 +33,6 @@ export class GameManager {
             players.on("message", (data) => {
                 const msg = JSON.parse(data.toString());
                 try{
-
-                
                 if (msg.type === "MOVE") {
                     const success = game.makeMove(
                         players,
@@ -45,6 +43,10 @@ export class GameManager {
                     if (!success) return;
                     const state = JSON.stringify({
                         type: "UPDATE",
+                        from: msg.from,
+                        to:msg.to,
+                        color:msg.color,
+                        peice:msg.peice,
                         ...game.getState()
                     })
                     game.players.white.send(state);

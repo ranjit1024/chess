@@ -1,11 +1,15 @@
+import type { historyType } from "@/pages/game";
+import type { Chess } from "chess.js";
 import { useRef, useState } from "react";
 
-export default function VideoPanel() {
+export default function VideoPanel({ moves }: { moves: historyType[] }) {
   const whiteVideoRef = useRef<HTMLVideoElement>(null);
   const blackVideoRef = useRef<HTMLVideoElement>(null);
 
   const [started, setStarted] = useState(false);
-
+  const white =  moves.filter((data) => data.color === "w")
+  const black = moves.filter((data)=>data.color === "b")
+  
   const startCamera = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
@@ -26,11 +30,7 @@ export default function VideoPanel() {
       console.error("Camera access denied", err);
     }
   };
-    const [moves, setMoves] = useState<string[]>([
-    "1. e4   e5",
-    "2. Nf3  Nc6",
-    "3. Bb5  a6",
-  ]);
+
 
   return (
     <div className=" bg-black flex items-center justify-center p-6">
@@ -60,7 +60,7 @@ export default function VideoPanel() {
 
         {/* Video Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          
+
           {/* White */}
           <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-4">
             <div className="mb-2 text-sm font-medium text-white">
@@ -76,21 +76,22 @@ export default function VideoPanel() {
                 className="h-full w-full object-cover"
               />
 
-              
+
             </div>
 
-             <div className="rounded-xl mt-2 bg-zinc-900 border border-zinc-800 p-4 flex flex-col">
-                <p className="mb-3 text-sm font-medium text-white">♟️ Moves</p>
-                <div className="flex-1 overflow-y-auto space-y-2 pr-2 scrollbar-thin scrollbar-thumb-zinc-700">
-              {moves.map((move, idx) => (
-                <div
-                  key={idx}
-                  className="text-sm text-zinc-300 font-mono"
-                >
-                  {move}
-                </div>
-              ))}
-            </div>
+            <div className="rounded-xl mt-2 bg-zinc-900 border border-zinc-800 p-4 flex flex-col">
+              <p className="mb-3 text-sm font-medium text-white">♟️ Moves</p>
+              <div className="flex-1 overflow-y-auto space-y-2 pr-2 scrollbar-thin scrollbar-thumb-zinc-700">
+                
+                {white.map((move: any, idx: any) => (
+                  <div
+                    key={idx}
+                    className="text-sm text-zinc-300 font-mono"
+                  >
+                    {`${move.peice.toUpperCase()}${move.from}  ${move.peice.toUpperCase()}${move.to}`}
+                  </div>
+                ))}
+              </div>
 
 
             </div>
@@ -112,17 +113,17 @@ export default function VideoPanel() {
               />
             </div>
             <div className="rounded-xl mt-2 bg-zinc-900 border border-zinc-800 p-4 flex flex-col">
-                <p className="mb-3 text-sm font-medium text-white">♟️ Moves</p>
-                <div className="flex-1 overflow-y-auto space-y-2 pr-2 scrollbar-thin scrollbar-thumb-zinc-700">
-              {moves.map((move, idx) => (
-                <div
-                  key={idx}
-                  className="text-sm text-zinc-300 font-mono"
-                >
-                  {move}
-                </div>
-              ))}
-            </div>
+              <p className="mb-3 text-sm font-medium text-white">♟️ Moves</p>
+              <div className="flex-1 overflow-y-auto space-y-2 pr-2 scrollbar-thin scrollbar-thumb-zinc-700">
+                {black.map((move: any, idx: any) => (
+                  <div
+                    key={idx}
+                    className="text-sm text-zinc-300 font-mono"
+                  >
+                    {`${move.peice.toUpperCase()}${move.from}  ${move.peice.toUpperCase()}${move.to}`}
+                  </div>
+                ))}
+              </div>
 
 
             </div>

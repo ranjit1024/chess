@@ -1,64 +1,105 @@
+//  Move {
+//   color: 'w',
+//   from: 'e2',
+//   to: 'e4',
+//   piece: 'p',
+//   captured: undefined,
+//   promotion: undefined,
+//   flags: 'b',
+//   san: 'e4',
+//   lan: 'e2e4',
+//   before: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+//   after: 'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1'
+// }
+
+export interface historyType{
+from:string;
+to:string;peice:string;
+color:"b" | "w"
+}
 import { useEffect, useState } from "react";
 import { Chess } from "chess.js";
 import { Chessboard, type PieceDropHandlerArgs } from "react-chessboard";
 import { useSocket } from "../hooks/useScoket";
-import VideoPanel from "../component/siderbar";
+import VideoPanel from "@/component/siderbar";
 
 export default function Game() {
     const [game, setGame] = useState(new Chess());
     const [color, setColor] = useState<"white" | "black" | undefined>(undefined);
-
+    const [history,setHistory] = useState<historyType[]>([])
     const socket = useSocket((msg) => {
         if (msg.type === "START") {
             setColor(msg.color);
         }
-
+        
         if (msg.type === "UPDATE") {
+            // console.log("data", game.history())
+            setHistory(prev => [
+               ...prev, 
+               {
+               from:msg.from,
+               to:msg.to,
+               peice:msg.peice,
+               color:msg.color
+           }])
             const newGame = new Chess(msg.fen);
             setGame(newGame);
         }
     });
 
-    function onPieceDrop({sourceSquare ,targetSquare}:PieceDropHandlerArgs) {
-        socket.send({
-            type: "MOVE",
-            from: sourceSquare,
-            to: targetSquare,
-        });
-
+    function onPieceDrop({ sourceSquare, targetSquare }: PieceDropHandlerArgs) {
+        try{
+            const move = game.move({from:sourceSquare,to:targetSquare as string});
+            console.log(move.piece)
+            const data = socket.send({
+                type: "MOVE",
+                from: sourceSquare,
+                to: targetSquare,
+                color:move.color,
+                peice:move.piece
+            });
+        }
+        catch(e){
+            console.log(e)
+        }
+        
         return true;
     }
+
     const chessboardOptions = {
-        position:  game.fen(),
+        position: game.fen(),
         onPieceDrop,
-        boardOrientation: color ,
-        arePiecesDraggable:  game.turn() === (color === "white" ? "w" : "b")
-        
-    } 
+        boardOrientation: color,
+        arePiecesDraggable: game.turn() === (color === "white" ? "w" : "b")
+
+    }
     return (
         <div className="min-h-screen  bg-zinc-950 flex items-center justify-center">
-            
 
-           
+
+
+
             {color ? (
                 <div className="grid grid-cols-2 p-5 gap-5">
                     <div>
 
-                    <Chessboard
-                    options={chessboardOptions }
-                    />
+                        <Chessboard
+                            options={chessboardOptions}
+                        />
                     </div>
-                    
-                        <div className="moves ">
-                            <VideoPanel/>
-                           
-                            </div>
-                        
+
+                    <div className="moves ">
+                        <VideoPanel moves={history}/>
                       
+                    </div>
+
+
                 </div>
-            )  : (
+            ) : (
                 <p className="text-white">Waiting for opponent...</p>
             )}
         </div>
     );
 }
+
+
