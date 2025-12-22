@@ -3,12 +3,19 @@ import { Game } from "./game";
 
 
 export class GameManager {
-    private game = new Map<string, Game>();
+    private games = new Map<string, Game>();
     private waitingPlayers: WebSocket | null = null;
 
     addPlayer(ws: WebSocket) {
         if (this.waitingPlayers) {
-            new Game(crypto.randomUUID(), this.waitingPlayers, ws)
+            const gameId = crypto.randomUUID()
+            const game = new Game(gameId, this.waitingPlayers, ws);
+            this.games.set(gameId, game);
+
+            this.startGame(game, gameId);
+            this.listen(game);
+
+            this.waitingPlayers = null;
         }
         else {
             this.waitingPlayers = ws;
