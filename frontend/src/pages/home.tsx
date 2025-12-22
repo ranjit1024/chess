@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Play, Video, Shield, Zap, Users, ChevronRight, Menu, X, Move } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const LandingPage = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -11,14 +12,14 @@ const LandingPage = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
+  const router = useNavigate()
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white font-sans selection:bg-indigo-500 selection:text-white overflow-hidden">
       
       {/* Background Gradients */}
       <div className="fixed inset-0 z-0 pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-indigo-900/20 rounded-full blur-[120px] opacity-40 mix-blend-screen" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-purple-900/20 rounded-full blur-[120px] opacity-40 mix-blend-screen" />
+        <div className="absolute top-[-10%] left-[-10%] w-125 h-125 bg-indigo-900/20 rounded-full blur-[120px] opacity-40 mix-blend-screen" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-150 h-150 bg-purple-900/20 rounded-full blur-[120px] opacity-40 mix-blend-screen" />
       </div>
 
       {/* Navbar */}
@@ -40,7 +41,11 @@ const LandingPage = () => {
 
           <div className="hidden md:flex items-center gap-4">
             <a href="#" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">Log in</a>
-            <button className="bg-white text-black px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-gray-200 transition-all hover:scale-105 active:scale-95">
+            <button 
+            onClick={()=>{
+            router('/chess')
+          }}
+            className="bg-white text-black px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-gray-200 transition-all hover:scale-105 active:scale-95">
               Play Now
             </button>
           </div>
@@ -62,7 +67,7 @@ const LandingPage = () => {
         </div>
 
         {/* Headline */}
-        <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-8 leading-[1.1] bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">
+        <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-8 leading-[1.1] bg-linear-to-b from-white to-gray-400 bg-clip-text text-transparent">
           Face your opponent,<br /> not just the board.
         </h1>
 
@@ -73,7 +78,9 @@ const LandingPage = () => {
 
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row items-center gap-4 mb-20">
-          <button className="w-full sm:w-auto px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-semibold transition-all flex items-center justify-center gap-2 shadow-[0_0_40px_-10px_rgba(79,70,229,0.5)]">
+          <button onClick={()=>{
+            router('/chess')
+          }} className="w-full sm:w-auto px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-semibold transition-all flex items-center justify-center gap-2 shadow-[0_0_40px_-10px_rgba(79,70,229,0.5)]">
             <Play className="w-5 h-5 fill-current" />
             Start Match
           </button>
@@ -83,8 +90,8 @@ const LandingPage = () => {
         </div>
 
         {/* App Interface Mockup */}
-        <div className="relative w-full max-w-5xl aspect-[16/9] md:aspect-[21/9] rounded-3xl border border-white/10 bg-[#121212] shadow-2xl overflow-hidden group">
-          
+        <div className="relative w-full max-w-5xl aspect-video md:aspect-21/9 rounded-3xl border border-white/10 bg-[#121212] shadow-2xl overflow-hidden group">
+
           {/* Mock UI Header */}
           <div className="absolute top-0 w-full h-12 border-b border-white/5 flex items-center px-6 justify-between bg-[#121212]/50 backdrop-blur-md z-20">
             <div className="flex gap-2">
@@ -101,7 +108,7 @@ const LandingPage = () => {
             {/* Left: The Board */}
             <div className="flex-1 flex items-center justify-center bg-[#151515] relative p-8">
               {/* Abstract Chess Board Representation */}
-              <div className="aspect-square h-full max-h-[400px] grid grid-cols-8 border-4 border-[#252525] rounded-lg overflow-hidden shadow-2xl">
+              <div className="aspect-square h-full max-h-100 grid grid-cols-8 border-4 border-[#252525] rounded-lg overflow-hidden shadow-2xl">
                 {[...Array(64)].map((_, i) => {
                   const row = Math.floor(i / 8);
                   const col = i % 8;
@@ -128,7 +135,7 @@ const LandingPage = () => {
                   alt="Opponent" 
                   className="w-full h-full object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-700"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
+                <div className="absolute inset-0 bg-linear-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-[0_0_10px_#22c55e]" />
                     <span className="font-medium text-white tracking-wide">Grandmaster_Alex</span>
@@ -192,7 +199,7 @@ const LandingPage = () => {
               <p className="text-gray-400 max-w-lg mb-8">
                 Low-latency WebRTC streaming ensures you never miss a reaction. The video feed floats unobtrusively or snaps to the side, giving you full control over your board view.
               </p>
-              <div className="h-32 rounded-xl bg-gradient-to-r from-indigo-900/20 to-purple-900/20 border border-white/5 relative overflow-hidden">
+              <div className="h-32 rounded-xl bg-linear-to-r from-indigo-900/20 to-purple-900/20 border border-white/5 relative overflow-hidden">
                  <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20"></div>
               </div>
             </div>

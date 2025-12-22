@@ -1,5 +1,4 @@
 import type { historyType } from "@/pages/game";
-import type { Chess } from "chess.js";
 import { useRef, useState } from "react";
 
 export default function VideoPanel({ moves }: { moves: historyType[] }) {
@@ -7,9 +6,9 @@ export default function VideoPanel({ moves }: { moves: historyType[] }) {
   const blackVideoRef = useRef<HTMLVideoElement>(null);
 
   const [started, setStarted] = useState(false);
-  const white =  moves.filter((data) => data.color === "w")
-  const black = moves.filter((data)=>data.color === "b")
-  
+  const white = moves.filter((data) => data.color === "w")
+  const black = moves.filter((data) => data.color === "b")
+
   const startCamera = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
@@ -86,22 +85,22 @@ export default function VideoPanel({ moves }: { moves: historyType[] }) {
 
               <div className="flex-1 [&::-webkit-scrollbar]:w-2
   [&::-webkit-scrollbar-track]:bg-zinc-900 overflow-y-auto space-y-2 pr-2 scrollbar-thin ">
-                
+
                 {white.map((move: any, idx: any) => (
 
-                  <div key={idx}  className="flex items-center gap-5 w-fu font-mono  text-sm text-gray-300 bg-white/5 p-2 rounded-lg border border-white/5">
-        
-                   
-                      <p>
+                  <div key={idx} className="flex items-center gap-5 w-fu font-mono  text-sm text-gray-300 bg-white/5 p-2 rounded-lg border border-white/5">
+
+
+                    <p>
                       {move.peice.toUpperCase()}{move.from}
-                      </p>
-                      <p>
+                    </p>
+                    <p>
                       {move.peice.toUpperCase()}{move.to}
-                      </p>
-               
-                    
+                    </p>
+
+
                   </div>
-                  
+
                 ))}
               </div>
 
@@ -130,19 +129,19 @@ export default function VideoPanel({ moves }: { moves: historyType[] }) {
   [&::-webkit-scrollbar-track]:bg-zinc-900 overflow-y-auto space-y-2 pr-2 scrollbar-thin ">
                 {black.map((move: any, idx: any) => (
 
-                  <div key={idx}  className="flex  items-center gap-5 w-fu font-mono  text-sm text-gray-300 bg-white/5 p-2 rounded-lg border border-white/5">
-        
-                   
-                      <p>
+                  <div key={idx} className="flex  items-center gap-5 w-fu font-mono  text-sm text-gray-300 bg-white/5 p-2 rounded-lg border border-white/5">
+
+
+                    <p>
                       {move.peice.toUpperCase()}{move.from}
-                      </p>
-                      <p>
+                    </p>
+                    <p>
                       {move.peice.toUpperCase()}{move.to}
-                      </p>
-               
-                    
+                    </p>
+
+
                   </div>
-                  
+
                 ))}
               </div>
 

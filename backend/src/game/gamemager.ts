@@ -8,6 +8,7 @@ export class GameManager {
 
     addPlayer(ws: WebSocket) {
         if (this.waitingPlayers) {
+            
             const gameId = crypto.randomUUID()
             const game = new Game(gameId, this.waitingPlayers, ws);
             this.games.set(gameId, game);
