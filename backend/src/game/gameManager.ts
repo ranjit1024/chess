@@ -17,21 +17,31 @@ export class GameManager {
             const gameId = crypto.randomUUID();
             const game = new Game(gameId, this.waintingPlayer, ws)// game logig new to write
             this.games.set(gameId, game);
-
+            this.sendStart(game, gameId);
+            this.listen(game);
+            this.waintingPlayer = null;
+        }
+        else {
+            this.waintingPlayer = ws;
+            ws.send(JSON.stringify({ type: "WAITING" }))
         }
 
+
     }
-    listen(game: Game){
+    listen(game: Game) {
         Object.values(game.players).forEach((players) => {
             players.on("message", (data) => {
                 const msg = JSON.parse(data.toString());
+                try{
 
+                
                 if (msg.type === "MOVE") {
                     const success = game.makeMove(
                         players,
                         msg.from,
                         msg.to
                     )
+                    console.log(success)
                     if (!success) return;
                     const state = JSON.stringify({
                         type: "UPDATE",
@@ -40,22 +50,26 @@ export class GameManager {
                     game.players.white.send(state);
                     game.players.black.send(state);
                 }
+            }
+            catch(e){
+                console.log(e)
+            }
             })
         })
     }
 
-    sendStrat(game:Game, gameId:string){
-         game.players.white.send(JSON.stringify({
-      type: "START",
-      color: "white",
-      gameId,
-    }));
+    sendStart(game: Game, gameId: string) {
+        game.players.white.send(JSON.stringify({
+            type: "START",
+            color: "white",
+            gameId,
+        }));
 
-    game.players.black.send(JSON.stringify({
-      type: "START",
-      color: "black",
-      gameId,
-    }));
+        game.players.black.send(JSON.stringify({
+            type: "START",
+            color: "black",
+            gameId,
+        }));
     }
 
 }
