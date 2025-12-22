@@ -34,7 +34,7 @@ export default function VideoPanel({ moves }: { moves: historyType[] }) {
 
   return (
     <div className=" bg-black flex items-center justify-center p-6">
-      <div className="w-full max-w-5xl rounded-2xl bg-gradient-to-br from-zinc-900 to-zinc-950 border border-zinc-800 shadow-2xl p-6">
+      <div className="w-full max-w-5xl rounded-2xl bg-linear-to-br from-zinc-900 to-zinc-950 border border-zinc-800 shadow-2xl p-6">
 
         {/* Header */}
         <div className="mb-6 text-center">
