@@ -1,4 +1,7 @@
+import {  useNavigate, useNavigation } from "react-router-dom";
+
 export function SidePanel() {
+  const route = useNavigate()
   return (
     <div className="flex-1 rounded-2xl bg-zinc-900/60 p-6 shadow-2xl border border-zinc-800 backdrop-blur flex flex-col">
       
@@ -15,7 +18,7 @@ export function SidePanel() {
       </div>
 
       {/* Join Button */}
-      <button className="
+      <button onClick={()=>route("/game")} className="
         mt-auto w-full rounded-xl bg-emerald-500
         py-3 font-semibold text-black
         hover:bg-emerald-400 active:scale-[0.98]

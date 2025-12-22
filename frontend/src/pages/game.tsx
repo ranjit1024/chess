@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Chess } from "chess.js";
 import { Chessboard, type PieceDropHandlerArgs } from "react-chessboard";
 import { useSocket } from "../hooks/useScoket";
+import VideoPanel from "../component/siderbar";
 
 export default function Game() {
     const [game, setGame] = useState(new Chess());
@@ -27,10 +28,6 @@ export default function Game() {
 
         return true;
     }
-    var config = {
-        draggable: true,
-        position: 'start'
-    }
     const chessboardOptions = {
         position:  game.fen(),
         onPieceDrop,
@@ -39,16 +36,27 @@ export default function Game() {
         
     } 
     return (
-        <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
+        <div className="min-h-screen  bg-zinc-950 flex items-center justify-center">
+            
 
+           
             {color ? (
-                <div className="w-150">
+                <div className="grid grid-cols-2 p-5 gap-5">
+                    <div>
 
                     <Chessboard
                     options={chessboardOptions }
                     />
+                    </div>
+                    
+                        <div className="moves ">
+                            <VideoPanel/>
+                           
+                            </div>
+                        
+                      
                 </div>
-            ) : (
+            )  : (
                 <p className="text-white">Waiting for opponent...</p>
             )}
         </div>
