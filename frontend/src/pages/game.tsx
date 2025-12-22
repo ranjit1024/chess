@@ -80,8 +80,8 @@ export default function Game() {
 
 
             {color ? (
-                <div className="grid grid-cols-2 p-5 gap-5">
-                    <div>
+                <div className="grid grid-cols-2 p-2 gap-5 ">
+                    <div className="h-fit mt-5">
 
                         <Chessboard
                             options={chessboardOptions}

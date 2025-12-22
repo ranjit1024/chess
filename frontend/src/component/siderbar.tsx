@@ -79,17 +79,25 @@ export default function VideoPanel({ moves }: { moves: historyType[] }) {
 
             </div>
 
-            <div className="rounded-xl mt-2 bg-zinc-900 border border-zinc-800 p-4 flex flex-col">
+            <div className="rounded-xl  overflow-y-scroll h-70  mt-2 bg-zinc-900 border border-zinc-800 p-4 flex flex-col">
               <p className="mb-3 text-sm font-medium text-white">♟️ Moves</p>
               <div className="flex-1 overflow-y-auto space-y-2 pr-2 scrollbar-thin scrollbar-thumb-zinc-700">
                 
                 {white.map((move: any, idx: any) => (
-                  <div
-                    key={idx}
-                    className="text-sm text-zinc-300 font-mono"
-                  >
-                    {`${move.peice.toUpperCase()}${move.from}  ${move.peice.toUpperCase()}${move.to}`}
+
+                  <div key={idx}  className="flex items-center gap-5 w-fu font-mono  text-sm text-gray-300 bg-white/5 p-2 rounded-lg border border-white/5">
+        
+                   
+                      <p>
+                      {move.peice.toUpperCase()}{move.from}
+                      </p>
+                      <p>
+                      {move.peice.toUpperCase()}{move.to}
+                      </p>
+               
+                    
                   </div>
+                  
                 ))}
               </div>
 
@@ -112,16 +120,24 @@ export default function VideoPanel({ moves }: { moves: historyType[] }) {
                 className="h-full w-full object-cover"
               />
             </div>
-            <div className="rounded-xl mt-2 bg-zinc-900 border border-zinc-800 p-4 flex flex-col">
+            <div className="rounded-xl overflow-hidden h-70 mt-2 bg-zinc-900 border border-zinc-800 p-4 flex flex-col">
               <p className="mb-3 text-sm font-medium text-white">♟️ Moves</p>
               <div className="flex-1 overflow-y-auto space-y-2 pr-2 scrollbar-thin scrollbar-thumb-zinc-700">
                 {black.map((move: any, idx: any) => (
-                  <div
-                    key={idx}
-                    className="text-sm text-zinc-300 font-mono"
-                  >
-                    {`${move.peice.toUpperCase()}${move.from}  ${move.peice.toUpperCase()}${move.to}`}
+
+                  <div key={idx}  className="flex  items-center gap-5 w-fu font-mono  text-sm text-gray-300 bg-white/5 p-2 rounded-lg border border-white/5">
+        
+                   
+                      <p>
+                      {move.peice.toUpperCase()}{move.from}
+                      </p>
+                      <p>
+                      {move.peice.toUpperCase()}{move.to}
+                      </p>
+               
+                    
                   </div>
+                  
                 ))}
               </div>
 

@@ -38,6 +38,10 @@ export class GameManager {
 
                     const state = JSON.stringify({
                         type: "UPDATE",
+                        from:msg.from,
+                        to:msg.to,
+                        color:msg.color,
+                        peice:msg.peice,
                         ...game.getState(),
                     });
 
