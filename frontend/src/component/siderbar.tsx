@@ -79,9 +79,13 @@ export default function VideoPanel({ moves }: { moves: historyType[] }) {
 
             </div>
 
-            <div className="rounded-xl  overflow-y-scroll h-70  mt-2 bg-zinc-900 border border-zinc-800 p-4 flex flex-col">
+            <div className="rounded-xl 
+            overflow-y-auto space-y-2 pr-2 scrollbar-thin     scrollbar-thumb-zinc-700
+            h-70  mt-2 bg-zinc-900 border border-zinc-800 p-4 flex flex-col">
               <p className="mb-3 text-sm font-medium text-white">♟️ Moves</p>
-              <div className="flex-1 overflow-y-auto space-y-2 pr-2 scrollbar-thin scrollbar-thumb-zinc-700">
+
+              <div className="flex-1 [&::-webkit-scrollbar]:w-2
+  [&::-webkit-scrollbar-track]:bg-zinc-900 overflow-y-auto space-y-2 pr-2 scrollbar-thin ">
                 
                 {white.map((move: any, idx: any) => (
 
@@ -122,7 +126,8 @@ export default function VideoPanel({ moves }: { moves: historyType[] }) {
             </div>
             <div className="rounded-xl overflow-hidden h-70 mt-2 bg-zinc-900 border border-zinc-800 p-4 flex flex-col">
               <p className="mb-3 text-sm font-medium text-white">♟️ Moves</p>
-              <div className="flex-1 overflow-y-auto space-y-2 pr-2 scrollbar-thin scrollbar-thumb-zinc-700">
+              <div className="flex-1 [&::-webkit-scrollbar]:w-2
+  [&::-webkit-scrollbar-track]:bg-zinc-900 overflow-y-auto space-y-2 pr-2 scrollbar-thin ">
                 {black.map((move: any, idx: any) => (
 
                   <div key={idx}  className="flex  items-center gap-5 w-fu font-mono  text-sm text-gray-300 bg-white/5 p-2 rounded-lg border border-white/5">
