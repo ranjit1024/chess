@@ -12,16 +12,13 @@ export class GameManager {
                 ws.send(JSON.stringify({
                     msg:"Same User"
                 }))
-                this.waitingPlayers = null;
                 return;
             }
             const gameId = crypto.randomUUID()
             const game = new Game(gameId, this.waitingPlayers.socket, ws);
             this.games.set(gameId, game);
-
             this.startGame(game, gameId);
             this.listen(game);
-
             this.waitingPlayers = null;
         }
         else {
