@@ -4,13 +4,19 @@ import { Game } from "./game";
 
 export class GameManager {
     private games = new Map<string, Game>();
-    private waitingPlayers: WebSocket | null = null;
+    private waitingPlayers: {id:string, socket:WebSocket} | null = null;
 
-    addPlayer(ws: WebSocket) {
+    addPlayer(ws: WebSocket,id:string) {
         if (this.waitingPlayers) {
-            
+            if(this.waitingPlayers.id === id){
+                ws.send(JSON.stringify({
+                    msg:"Same User"
+                }))
+                this.waitingPlayers = null;
+                return;
+            }
             const gameId = crypto.randomUUID()
-            const game = new Game(gameId, this.waitingPlayers, ws);
+            const game = new Game(gameId, this.waitingPlayers.socket, ws);
             this.games.set(gameId, game);
 
             this.startGame(game, gameId);
@@ -19,7 +25,7 @@ export class GameManager {
             this.waitingPlayers = null;
         }
         else {
-            this.waitingPlayers = ws;
+            this.waitingPlayers = {id:id,socket:ws};
             ws.send(JSON.stringify("WAITING"))
         }
     }
