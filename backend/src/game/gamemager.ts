@@ -4,27 +4,33 @@ import { Game } from "./game";
 
 export class GameManager {
     private games = new Map<string, Game>();
-    private waitingPlayers: {id:string, socket:WebSocket} | null = null;
+    private player_1: {id:string, socket:WebSocket} | null = null;
+    private player_2: {id:string, socket:WebSocket} | null = null;
 
     addPlayer(ws: WebSocket,id:string) {
-        if (this.waitingPlayers) {
-            if(this.waitingPlayers.id === id){
+        if(this.player_1 === null){
+            this.player_1 = {id:id,socket:ws}
+            ws.send(JSON.stringify("WAITING"))
+        }
+        else{
+            this.player_2 = {id:id,socket:ws}
+            if(this.player_1.id === this.player_2.id){
+                console.log("Same user")
                 ws.send(JSON.stringify({
-                    msg:"Same User"
+                    msg:"same User"
                 }))
-                return;
+                 return;
             }
-            const gameId = crypto.randomUUID()
-            const game = new Game(gameId, this.waitingPlayers.socket, ws);
+             const gameId = crypto.randomUUID()
+            const game = new Game(gameId, this.player_1.socket, ws);
             this.games.set(gameId, game);
             this.startGame(game, gameId);
             this.listen(game);
-            this.waitingPlayers = null;
+            this.player_1 = null;
+            this.player_2 = null;
         }
-        else {
-            this.waitingPlayers = {id:id,socket:ws};
-            ws.send(JSON.stringify("WAITING"))
-        }
+
+      
     }
 
     listen(game: Game) {
