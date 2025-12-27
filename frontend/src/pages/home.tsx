@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Play, Video, Shield, Zap, Users, ChevronRight, Menu, X, Move } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { ChessBoard } from '@/component/dummyChess';
 
 const LandingPage = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Handle scroll effect for navbar
+
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
@@ -90,7 +92,7 @@ const LandingPage = () => {
         </div>
 
         {/* App Interface Mockup */}
-        <div className="relative w-full max-w-5xl aspect-video md:aspect-21/9 rounded-3xl border border-white/10 bg-[#121212] shadow-2xl overflow-hidden group">
+        <div className="relative w-full h-180 max-w-5xl aspect-video md:aspect-21/9 rounded-3xl border border-white/10 bg-[#121212] shadow-2xl overflow-hidden group">
 
           {/* Mock UI Header */}
           <div className="absolute top-0 w-full h-12 border-b border-white/5 flex items-center px-6 justify-between bg-[#121212]/50 backdrop-blur-md z-20">
@@ -103,30 +105,18 @@ const LandingPage = () => {
           </div>
 
           {/* The Board & Video Layout */}
-          <div className="flex h-full pt-12">
+          <div className="flex justify-between h-200 pt-12">
             
             {/* Left: The Board */}
-            <div className="flex-1 flex items-center justify-center bg-[#151515] relative p-8">
+            <div className=" flex jus bg-[#151515]  ">
               {/* Abstract Chess Board Representation */}
-              <div className="aspect-square h-full max-h-100 grid grid-cols-8 border-4 border-[#252525] rounded-lg overflow-hidden shadow-2xl">
-                {[...Array(64)].map((_, i) => {
-                  const row = Math.floor(i / 8);
-                  const col = i % 8;
-                  const isBlack = (row + col) % 2 === 1;
-                  return (
-                    <div key={i} className={`${isBlack ? 'bg-[#2a2a2a]' : 'bg-[#3a3a3a]'} relative`}>
-                      {/* Random pieces for visual flair */}
-                      {i === 12 && <div className="absolute inset-0 flex items-center justify-center text-3xl">♟</div>}
-                      {i === 28 && <div className="absolute inset-0 flex items-center justify-center text-3xl text-indigo-400">♞</div>}
-                      {i === 35 && <div className="absolute inset-0 flex items-center justify-center text-3xl">♛</div>}
-                    </div>
-                  );
-                })}
-              </div>
+             
+          <ChessBoard w={150} />
+              
             </div>
 
             {/* Right: Opponent Video Feed (The Unique Selling Point) */}
-            <div className="w-1/3 border-l border-white/10 relative bg-gray-900/50">
+            <div className="w-full h-full border-l border-white/10  bg-gray-900/50">
               
               {/* Opponent Video */}
               <div className="h-1/2 relative overflow-hidden group-hover:scale-[1.02] transition-transform duration-500">
@@ -136,10 +126,7 @@ const LandingPage = () => {
                   className="w-full h-full object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-700"
                 />
                 <div className="absolute inset-0 bg-linear-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-[0_0_10px_#22c55e]" />
-                    <span className="font-medium text-white tracking-wide">Grandmaster_Alex</span>
-                  </div>
+                 
                   <div className="text-xs text-gray-400 mt-1">ELO 2450 • Sweden</div>
                 </div>
               </div>
