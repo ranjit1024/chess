@@ -121,13 +121,13 @@ const LandingPage = () => {
               {/* Opponent Video */}
               <div className="h-1/2 relative overflow-hidden group-hover:scale-[1.02] transition-transform duration-500">
                 <img 
-                  src="/api/placeholder/400/300" 
+                  src="https://images.chesscomfiles.com/uploads/v1/images_users/tiny_mce/ColinStapczynski/phph1E1sI.jpeg" 
                   alt="Opponent" 
                   className="w-full h-full object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-700"
                 />
                 <div className="absolute inset-0 bg-linear-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
                  
-                  <div className="text-xs text-gray-400 mt-1">ELO 2450 • Sweden</div>
+                  <div className="text-xs text-gray-400 mt-1">ELO 2450 • India</div>
                 </div>
               </div>
 
@@ -187,7 +187,7 @@ const LandingPage = () => {
                 Low-latency WebRTC streaming ensures you never miss a reaction. The video feed floats unobtrusively or snaps to the side, giving you full control over your board view.
               </p>
               <div className="h-32 rounded-xl bg-linear-to-r from-indigo-900/20 to-purple-900/20 border border-white/5 relative overflow-hidden">
-                 <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20"></div>
+                 <div className="absolute inset-0 bg-[url('https://images.chesscomfiles.com/uploads/v1/images_users/tiny_mce/ColinStapczynski/phph1E1sI.jpeg')] opacity-20"></div>
               </div>
             </div>
 

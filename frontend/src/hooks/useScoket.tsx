@@ -25,5 +25,5 @@ export function useSocket(onMessage: (msg: any) => void) {
     socketRef.current?.send(JSON.stringify(data));
   }
 
-  return { send };
+  return { send, socketRef };
 }

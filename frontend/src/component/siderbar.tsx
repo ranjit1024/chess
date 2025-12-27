@@ -1,7 +1,7 @@
 import type { historyType } from "@/pages/game";
-import { useRef, useState } from "react";
+import { useRef, useState, type RefObject } from "react";
 
-export default function VideoPanel({ moves }: { moves: historyType[] }) {
+export default function VideoPanel({ moves,socket }: { moves: historyType[],socket:RefObject<WebSocket | null> }) {
   const whiteVideoRef = useRef<HTMLVideoElement>(null);
   const blackVideoRef = useRef<HTMLVideoElement>(null);
 
@@ -10,6 +10,15 @@ export default function VideoPanel({ moves }: { moves: historyType[] }) {
   const black = moves.filter((data) => data.color === "b")
 
   const startCamera = async () => {
+    const pc = new RTCPeerConnection();
+    pc.onicecandidate = (e) =>{
+      if(e.candidate){
+        socket.current?.send(JSON.stringify({
+          type:"ICE",
+          candidate:e.candidate
+        }))
+      }
+    }
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: true,

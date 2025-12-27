@@ -9,6 +9,5 @@ const gameManager = new GameManager();
 wss.on("connection", (ws,req:Response) => {
   const params = new URL(req.url, "http://localhost").searchParams;
   const id = params.get("id") as string;
-  console.log(id)
   gameManager.addPlayer(ws,id);
 });

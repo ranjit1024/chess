@@ -12,9 +12,7 @@ export default function Game() {
     const [game, setGame] = useState(new Chess());
     const [color, setColor] = useState<"white" | "black" | undefined>(undefined);
     const [history,setHistory] = useState<historyType[]>([]);
-
     const history1 = game.history({verbose:true})
-    
     const socket = useSocket((msg) => {
         if (msg.type === "START") {
             setColor(msg.color);
@@ -39,7 +37,7 @@ export default function Game() {
         try{
             const move = game.move({from:sourceSquare,to:targetSquare as string});
             console.log(move.piece)
-            const data = socket.send({
+            const data = socket?.send({
                 type: "MOVE",
                 from: sourceSquare,
                 to: targetSquare,
@@ -77,7 +75,7 @@ export default function Game() {
                     </div>
 
                     <div className="moves ">
-                        <VideoPanel moves={history}/>
+                        <VideoPanel moves={history} socket={socket.socketRef} />
                       
                     </div>
 
