@@ -33,7 +33,6 @@ export class GameManager {
       
     }
     video(game:Game){
-
     };
     listen(game: Game) {
         Object.values(game.players).forEach((player) => {
