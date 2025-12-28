@@ -7,7 +7,6 @@ const LandingPage = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Handle scroll effect for navbar
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -108,12 +107,7 @@ const LandingPage = () => {
           <div className="flex justify-between h-200 pt-12">
             
             {/* Left: The Board */}
-            <div className=" flex jus bg-[#151515]  ">
-              {/* Abstract Chess Board Representation */}
-             
-          <ChessBoard w={150} />
-              
-            </div>
+     
 
             {/* Right: Opponent Video Feed (The Unique Selling Point) */}
             <div className="w-full h-full border-l border-white/10  bg-gray-900/50">

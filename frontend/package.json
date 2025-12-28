@@ -16,6 +16,7 @@
     "react": "^19",
     "react-chessboard": "^5.8.6",
     "react-dom": "^19",
+    "react-responsive": "^10.0.1",
     "react-router-dom": "^7.11.0",
     "tailwindcss": "^4.1.11"
   },

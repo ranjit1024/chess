@@ -6,7 +6,7 @@ interface MoveInput {
   to: Square;
   promotion?: 'q' | 'r' | 'b' | 'n';
 }
-export function ChessBoard({ w }: { w: number }) {
+export function ChessBoard() {
   const chess = useMemo(() => new Chess(), []);
   const [fen, setFen] = useState<string>(chess.fen());
   const [moveIndex, setMoveIndex] = useState<number>(0);
@@ -58,8 +58,8 @@ export function ChessBoard({ w }: { w: number }) {
 
   }
   return (
-    <div className="rounded-2xl bg-zinc-900/60 p-6 shadow-2xl border border-zinc-800 backdrop-blur">
-      <div className={`grid aspect-square w-${w} rounded-xl overflow-hidden`}>
+    <div className="rounded-2xl  bg-zinc-900/60 p-6 shadow-2xl border border-zinc-800 backdrop-blur">
+      <div className={`grid w-fit aspect-square  rounded-xl overflow-hidden`}>
         <Chessboard
           options={chessboardOptions}
         />
