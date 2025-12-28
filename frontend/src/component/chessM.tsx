@@ -8,6 +8,7 @@ import { Chess } from "chess.js";
 import { Chessboard, type PieceDropHandlerArgs } from "react-chessboard";
 import { useSocket } from "../hooks/useScoket";
 import VideoPanel from "@/component/siderbar";
+import { MBmoves } from "./msiderBar";
 export default function Mchess() {
     const [game, setGame] = useState(new Chess());
     const [color, setColor] = useState<"white" | "black" | undefined>(undefined);
@@ -60,15 +61,24 @@ export default function Mchess() {
 
     }
     return (
-        <div className="min-h-screen  bg-zinc-950 flex items-center justify-center">
+        <div className="min-h-screen h-fit bg-zinc-950 flex items-center justify-center p-1">
 
             {color ? (
-                <div className="grid grid-cols-2 p-2 gap-5 max-md:flex max-md:flex-col ">
-                    <div className="h-fit mt-5">
+                <div className=" gap-5 ">
+                    <div className=" grid h-screen grid-rows-[20%_60%_20%]">
+                        <div className="h-fit">
+                        <MBmoves/>
+                            </div>
+                        <div>
 
                         <Chessboard
                             options={chessboardOptions}
                         />
+                        </div>
+                          <div className="h-full">
+                        <MBmoves/>
+                            </div>
+                        
                     </div>
 
 
