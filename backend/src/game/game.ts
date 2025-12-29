@@ -13,7 +13,7 @@ export class Game{
         this.chess = new Chess();
         this.players = {white,black};
     }
-
+    
     makeMove(player:WebSocket, from:string, to:string){
         const color = player === this.players.white ? "w" :"b";
 
