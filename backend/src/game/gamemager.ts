@@ -30,8 +30,6 @@ export class GameManager {
             this.player_1 = null;
             this.player_2 = null;
         }
-
-
     }
 
 
@@ -85,7 +83,7 @@ export class GameManager {
         const opponent = sender === game.players.white ?
             game?.players.white :
             game?.players.black;
-
+            console.log(opponent)
         if (opponent.readyState === WebSocket.OPEN) {
             opponent.send(JSON.stringify(msg))
         }
