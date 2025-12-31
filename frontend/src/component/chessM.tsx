@@ -1,3 +1,4 @@
+import { CameraIcon, VideoIcon } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 
 // Configuration
@@ -20,11 +21,16 @@ const VideoCall = () => {
   return (
     <div className="p-4 flex flex-col items-center">
       <h2 className="text-xl font-bold mb-4">Native WS WebRTC Client</h2>
-      <div className="flex gap-4">
-        <video ref={localVideoRef} autoPlay playsInline muted className="w-64 h-48 bg-gray-900 border-2 border-blue-500" />
-        <video ref={remoteVideoRef} autoPlay playsInline className="w-64 h-48 bg-gray-900 border-2 border-green-500" />
+      <div className="flex gap-4 flex-col">
+      <button className='px-10 py-3 bg-slate-900 rounded-md text-white w-fit font-medium '>Start Video
+        
+        </button> 
+
+        <video ref={localVideoRef} autoPlay playsInline muted className="w-full h-48 bg-gray-900 border-2 border-blue-500" />
+       
+        <video ref={remoteVideoRef} autoPlay playsInline className="w-full h-48 bg-gray-900 border-2 border-green-500" />
+       
       </div>
-      <div className="mt-4">{isConnected ? "Connected" : "Waiting..."}</div>
     </div>
   );
 };

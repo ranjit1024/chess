@@ -48,12 +48,12 @@ export function ChessBoard() {
         setFen(chess.fen());
         setMoveIndex(0);
       }
-    }, 1500);
+    }, 1000);
     return () => clearInterval(intervel)
   }, [moveIndex, chess, demoMoves]);
   const chessboardOptions = {
     position:fen,
-    animationDuration:100,
+    animationDuration:10,
     arePiecesDraggable:false,
 
   }
