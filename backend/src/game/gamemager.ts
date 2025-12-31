@@ -59,23 +59,15 @@ export class GameManager {
 
                     game.players.white.send(state);
                     game.players.black.send(state);
-                }else{
-                    this.relayOpponent(game,player,msg)
+                }
+                else if(msg.type === "ice"){
+                    console.log("woriing")
                 }
                
             })
         })
     }
-     private relayOpponent(game: Game, sender: WebSocket, msg: SignalingMsg): void {
-    const opponent = sender === game.players.white ? game.players.black : game.players.black;
-    if (opponent.readyState === WebSocket.OPEN) {
-      const relayMsg: SignalingMsg = {
-        type: msg.type,
-        payload: msg.payload.offer || msg.payload.answer || msg.payload.candidate || msg.payload,
-      };
-      opponent.send(JSON.stringify(relayMsg));
-    }
-  }
+    
     startGame(game: Game, gameId: string) {
         game.players.white.send(JSON.stringify({
             type: "START",
