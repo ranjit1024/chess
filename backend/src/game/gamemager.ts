@@ -2,8 +2,8 @@ import WebSocket from "ws";
 import { Game } from "./game";
 
 interface SignalingMsg {
-  type: 'offer' | 'answer' | 'ice-candidate';
-  payload?: any;  // RTCSessionDescriptionInit | RTCIceCandidateInit
+    type: 'offer' | 'answer' | 'ice-candidate';
+    payload?: any;  // RTCSessionDescriptionInit | RTCIceCandidateInit
 }
 export class GameManager {
     private games = new Map<string, Game>();
@@ -60,14 +60,39 @@ export class GameManager {
                     game.players.white.send(state);
                     game.players.black.send(state);
                 }
-                else if(msg.type === "ice"){
-                    console.log("woriing")
+                else if (msg.type === "offer") {
+                    console.log("Relaying Offer");
+                    this.relayToOpponent(game, player, {
+                        type: "offer",
+                        sdp: msg.sdp  // Ensure client sent 'sdp'
+                    });
                 }
-               
+
+                else if (msg.type === "answer") {
+                    console.log("Relaying Answer");
+                    this.relayToOpponent(game, player, {
+                        type: "answer",
+                        sdp: msg.sdp // Fixed typo 'spd' -> 'sdp'
+                    });
+                }
+
+                else if (msg.type === "ice-candidate") {
+                    console.log("Relaying ICE Candidate");
+                    this.relayToOpponent(game, player, {
+                        type: "ice-candidate",
+                        candidate: msg.candidate
+                    });
+                }
+
             })
         })
     }
-    
+    relayToOpponent(game: Game, sender: any, message: any) {
+        const opponent = sender === game.players.white ? game.players.black : game.players.white;
+        if (opponent && opponent.readyState === WebSocket.OPEN) {
+            opponent.send(JSON.stringify(message));
+        }
+    };
     startGame(game: Game, gameId: string) {
         game.players.white.send(JSON.stringify({
             type: "START",
