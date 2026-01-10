@@ -36,7 +36,7 @@ const LandingPage = () => {
           <div className="flex items-center gap-4">
            
             <button onClick={()=>{
-              route("/chess")
+              route("/game")
             }} className="group relative px-4 py-2 bg-white text-slate-950 text-sm font-bold rounded-full hover:bg-indigo-50 transition-all flex items-center gap-2">
               Play Now
               <ChevronRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
