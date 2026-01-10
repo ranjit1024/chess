@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+    paths: ['backend/**']
 
 jobs:
   build-and-push:
@@ -26,3 +27,17 @@ jobs:
         push: true
         tags: ranjitdas2048/ws-server  # Replace with your Docker Hub username and repository
 
+    - name: Verify Pushed Image
+      run: docker pull 100xdevs/web-app:latest
+
+    - name: Deploy to EC2
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        script: |
+          sudo docker pull ranjitdas2048/ws-server:latest
+          sudo docker stop web-app || true
+          sudo docker rm web-app || true
+          sudo docker run -d --name ws-server -p 8080:8080 ranjitdas2048/ws-server:latest
