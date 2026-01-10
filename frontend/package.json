@@ -1,0 +1,30 @@
+{
+  "name": "bun-react-template",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "bun --hot src/index.ts",
+    "start": "NODE_ENV=production bun src/index.ts",
+    "build": "bun run build.ts output public"
+  },
+  "dependencies": {
+    "@types/react-router-dom": "^5.3.3",
+    "@types/uuid": "^11.0.0",
+    "bun-plugin-tailwind": "^0.1.2",
+    "chess.js": "^1.4.0",
+    "lucide-react": "^0.562.0",
+    "react": "^19",
+    "react-chessboard": "^5.8.6",
+    "react-dom": "^19",
+    "react-responsive": "^10.0.1",
+    "react-router-dom": "^7.11.0",
+    "tailwind-scrollbar": "^4.0.2",
+    "tailwindcss": "^4.1.11"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/react": "^19",
+    "@types/react-dom": "^19"
+  }
+}

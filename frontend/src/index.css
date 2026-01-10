@@ -1,0 +1,32 @@
+@import "tailwindcss";
+@layer utilities {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+  /* Custom scrollbar for WebKit browsers (Chrome, Safari) */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 10px; /* Width of the entire scrollbar */
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    /* Apply Tailwind background color utility for the track (background) */
+    @apply bg-gray-200; 
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    /* Apply Tailwind background color utility for the thumb (draggable part) */
+    @apply bg-blue-500 rounded-lg;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-blue-600; /* Color on hover */
+  }
+}
