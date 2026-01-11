@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Mic, MicOff, Video, VideoOff, PhoneOff, Settings } from 'lucide-react';
 
-export default function MediaControlBar({startVideo}:{startVideo:()=>void}) {
+export default function MediaControlBar({startVideo, }:{startVideo:()=>void}) {
   const [isMicOn, setIsMicOn] = useState(false); // Default matches your image (Off)
   const [isCameraOn, setIsCameraOn] = useState(false); // Default matches your image (Off)
 
