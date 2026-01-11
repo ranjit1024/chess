@@ -30,12 +30,6 @@ export default function MediaControlBar({startVideo}:{startVideo:()=>void}) {
         >
           {isCameraOn ? <Video size={20} /> : <VideoOff size={20} />}
         </ControlButton>
-
-        {/* Separator Line */}
-
-         
-
-       
       </div>
     
   );
