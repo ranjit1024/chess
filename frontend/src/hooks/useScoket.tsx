@@ -11,7 +11,7 @@ export function useSocket(onMessage: (msg: any) => void) {
       return
     }
 
-    const socket = new WebSocket(`ws://50.19.38.45:8080?id=${id}`);
+    const socket = new WebSocket(`https://chess.ranjitdasproject.space/:8080?id=${id}`);
     socketRef.current = socket;
 
     socket.onmessage = (event) => {
