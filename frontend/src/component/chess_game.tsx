@@ -24,8 +24,8 @@ export function ChessGame({ socket, send, color }: { color: "white" | "black" | 
     const [audioOn, setAudioOn] = useState(true);
     const [playerDisconnect, setPlayerDisconnect] = useState(false);
     const [stream, setStream] = useState<MediaStream | null>(null);
-
-
+    const [win, setWin] = useState<boolean>(false)
+    const [loss, setLoss] = useState<boolean>(false);
     useEffect(() => {
         if (scrollContainerRef.current) {
             scrollContainerRef.current.scrollLeft = scrollContainerRef.current.scrollWidth;
@@ -111,28 +111,13 @@ export function ChessGame({ socket, send, color }: { color: "white" | "black" | 
                 const newGame = new Chess(msg.fen);
                 setGame(newGame);
             }
+            else if(msg.type === "CHECKMATE"){
+                setLoss(true)
+            }
 
         }
     }, [])
 
-    const kingSquareInCheck = useMemo(() => {
-        // if (!game.inCheck()) return null;
-
-        const board = game.board();
-        const turn = game.turn(); // 'w' or 'b'
-        console.log(turn)
-
-        for (let row = 0; row < 8; row++) {
-            for (let col = 0; col < 8; col++) {
-                const piece = board[row]![col];
-                console.log(piece)
-                if (piece && piece.type === "k" && piece.color === turn) {
-                    return String.fromCharCode(97 + col) + (8 - row);
-                }
-            }
-        }
-        return null;
-    }, [game]);
 
     function onSquareClick({
         square,
@@ -148,7 +133,6 @@ export function ChessGame({ socket, send, color }: { color: "white" | "black" | 
                 setMoveFrom(square);
             }
 
-            // return early
             return;
         }
 
@@ -209,7 +193,10 @@ export function ChessGame({ socket, send, color }: { color: "white" | "black" | 
             });
 
             if (game.isCheckmate()) {
-                alert('game Over')
+                setWin(true)
+                send({
+                    type: "CHECKMATE"
+                })
             }
         } catch {
             // if invalid, setMoveFrom and getMoveOptions
@@ -227,9 +214,6 @@ export function ChessGame({ socket, send, color }: { color: "white" | "black" | 
         setMoveFrom('');
         setOptionSquares({});
     }
-
-
-
     async function SendVideo() {
         if (!pcRef.current) return;
         console.log('fasdf')
@@ -291,7 +275,7 @@ export function ChessGame({ socket, send, color }: { color: "white" | "black" | 
         id: 'square-styles'
     };
     return <div>
-        {isMobile ? <Mobile remoteVideo={remoteVideo} color={color!} disconnect={playerDisconnect} localVideo={localVideo} chessboardOptions={chessboardOptions} history={history} SendVideo={SendVideo} /> : <Desktop
-            color={color!} disconnect={playerDisconnect} remoteVideo={remoteVideo} localVideo={localVideo} chessboardOptions={chessboardOptions} history={history} SendVideo={SendVideo} />}
+        {isMobile ? <Mobile win={win} loss={loss} remoteVideo={remoteVideo} color={color!} disconnect={playerDisconnect} localVideo={localVideo} chessboardOptions={chessboardOptions} history={history} SendVideo={SendVideo} /> : <Desktop
+            color={color!}  win={win} loss={loss} disconnect={playerDisconnect} remoteVideo={remoteVideo} localVideo={localVideo} chessboardOptions={chessboardOptions} history={history} SendVideo={SendVideo} />}
     </div>
 }

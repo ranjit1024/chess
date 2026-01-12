@@ -38,6 +38,6 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         script: |
           sudo docker pull ranjitdas2048/ws-server:latest
-          sudo docker stop web-app || true
-          sudo docker rm web-app || true
+          sudo docker stop ws-server || true
+          sudo docker rm ws-server || true
           sudo docker run -d --name ws-server -p 8080:8080 ranjitdas2048/ws-server:latest

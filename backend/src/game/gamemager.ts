@@ -35,6 +35,7 @@ export class GameManager {
         }
     }
     listen(game: Game) {
+        
         Object.values(game.players).forEach((player) => {
             player.on('close', (event) => {
                 console.log(event)
@@ -53,6 +54,7 @@ export class GameManager {
             });
             player.on("message", (data) => {
                 const msg = JSON.parse(data.toString())
+                
                 if (msg.type === "MOVE") {
                     try {
 
@@ -79,7 +81,7 @@ export class GameManager {
                         console.log(e)
                     }
                 }
-
+            
                 else if (msg.type === "offer") {
                     console.log("Relaying Offer");
                     this.relayToOpponent(game, player, {
@@ -102,6 +104,11 @@ export class GameManager {
                         type: "ice-candidate",
                         candidate: msg.candidate
                     });
+                }
+                else if(msg.type === "CHECKMATE"){
+                     this.relayToOpponent(game,player,{
+                        type:'CHECKMATE'
+                     })
                 }
 
             })

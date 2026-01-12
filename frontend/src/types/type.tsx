@@ -12,6 +12,8 @@ export interface compType {
     chessboardOptions: ChessboardOptions
     history: historyType[]
     color: "white" | "black",
+    win : boolean,
+    loss: boolean
     disconnect:boolean,
     SendVideo: () => void
 }

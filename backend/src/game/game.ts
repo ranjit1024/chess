@@ -21,7 +21,7 @@ export class Game{
         const move = this.chess.move({from,to});
         return  move ? true : false
     }
-
+    
     getState(){
         return {
             fen:this.chess.fen(),
