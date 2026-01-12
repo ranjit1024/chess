@@ -24,8 +24,10 @@ export function ChessGame({ socket, send, color }: { color: "white" | "black" | 
     const [audioOn, setAudioOn] = useState(true);
     const [playerDisconnect, setPlayerDisconnect] = useState(false);
     const [stream, setStream] = useState<MediaStream | null>(null);
+    const localStream = useRef<MediaStream | null>(null);
     const [win, setWin] = useState<boolean>(false)
     const [loss, setLoss] = useState<boolean>(false);
+    const [camaraNotFound, setcamaraNotFound] = useState(false);
     useEffect(() => {
         if (scrollContainerRef.current) {
             scrollContainerRef.current.scrollLeft = scrollContainerRef.current.scrollWidth;
@@ -111,7 +113,7 @@ export function ChessGame({ socket, send, color }: { color: "white" | "black" | 
                 const newGame = new Chess(msg.fen);
                 setGame(newGame);
             }
-            else if(msg.type === "CHECKMATE"){
+            else if (msg.type === "CHECKMATE") {
                 setLoss(true)
             }
 
@@ -214,44 +216,64 @@ export function ChessGame({ socket, send, color }: { color: "white" | "black" | 
         setMoveFrom('');
         setOptionSquares({});
     }
-    async function SendVideo() {
-        if (!pcRef.current) return;
+    async function SendVideo(): Promise<boolean> {
+        if (!pcRef.current) return false;
+
         console.log('fasdf')
-        if (socket?.current?.readyState !== WebSocket.OPEN) return;
+        try {
 
-        const media = await navigator.mediaDevices.getUserMedia({
-            video: true,
-            audio: true
-        })
-        setStream(media)
-        const videoTrack = media.getVideoTracks()[0];
-        if (localVideo.current) {
-            localVideo.current.srcObject = media
-        }
 
-        pcRef.current.onnegotiationneeded = async () => {
-            const senderoffer = await pcRef.current!.createOffer();
-            await pcRef.current!.setLocalDescription(senderoffer);
-            socket?.current?.send(JSON.stringify({
-                type: "offer",
-                sdp: senderoffer
-            }))
+            if (socket?.current?.readyState !== WebSocket.OPEN) return false;
+
+            const media = await navigator.mediaDevices.getUserMedia({
+                video: true,
+                audio: true
+            })
+            localStream.current = media
+            const videoTrack = media.getVideoTracks()[0];
+            if (localVideo.current) {
+                localVideo.current.srcObject = media;
+            }
+            setVideoOn(true)
+
+            pcRef.current.onnegotiationneeded = async () => {
+                const senderoffer = await pcRef.current!.createOffer();
+                await pcRef.current!.setLocalDescription(senderoffer);
+                socket?.current?.send(JSON.stringify({
+                    type: "offer",
+                    sdp: senderoffer
+                }))
+            }
+            if (videoTrack) {
+                console.log("adding meddsf")
+                pcRef.current.addTrack(videoTrack, media)
+            }
+            return true
         }
-        if (videoTrack) {
-            console.log("adding meddsf")
-            pcRef.current.addTrack(videoTrack, media)
+        catch (e) {
+            console.log(e);
+            setcamaraNotFound(true);
+       
+            return false;
         }
     }
+    useEffect(()=>{
+        const timer = setTimeout(() => {
+            if(camaraNotFound === true){
+                setcamaraNotFound(false)
+            }
+        }, 4000);
+        return ()=>clearTimeout(timer)
+    },[camaraNotFound])
+    function toggleVideo() {
+        if (!localStream.current) return;
 
-    const toggleVideo = (): void => {
-        if (!stream) return;
-
-        stream.getVideoTracks().forEach((track: MediaStreamTrack) => {
-            track.enabled = !track.enabled;
-            setVideoOn(track.enabled);
-        });
-    };
-
+        const videoTrack = localStream.current.getAudioTracks()[0];
+        if (videoTrack) {
+            videoTrack.enabled = !videoTrack.enabled;
+            setVideoOn(videoTrack.enabled);
+        }
+    }
     const toggleAudio = (): void => {
         if (!stream) return;
 
@@ -260,10 +282,7 @@ export function ChessGame({ socket, send, color }: { color: "white" | "black" | 
             setAudioOn(track.enabled);
         });
     };
-    const customStyles = {
-        e4: { backgroundColor: 'rgba(255, 255, 0, 0.4)' },
-        d4: { boxShadow: 'inset 0 0 1px 4px rgba(255, 0, 0, 0.75)' },
-    }
+
     const chessboardOptions = {
         allowDragging: false,
         onSquareClick,
@@ -271,11 +290,12 @@ export function ChessGame({ socket, send, color }: { color: "white" | "black" | 
         squareStyles: optionSquares,
         boardOrientation: color,
         arePiecesDraggable: game.turn() === (color === "white" ? "w" : "b"),
-
         id: 'square-styles'
     };
     return <div>
-        {isMobile ? <Mobile win={win} loss={loss} remoteVideo={remoteVideo} color={color!} disconnect={playerDisconnect} localVideo={localVideo} chessboardOptions={chessboardOptions} history={history} SendVideo={SendVideo} /> : <Desktop
-            color={color!}  win={win} loss={loss} disconnect={playerDisconnect} remoteVideo={remoteVideo} localVideo={localVideo} chessboardOptions={chessboardOptions} history={history} SendVideo={SendVideo} />}
+        {isMobile ? <Mobile camaraNotFound={camaraNotFound} win={win} loss={loss} remoteVideo={remoteVideo} color={color!} disconnect={playerDisconnect} localVideo={localVideo} chessboardOptions={chessboardOptions} history={history} SendVideo={SendVideo} /> : 
+        <Desktop
+        camaraNotFound={camaraNotFound}
+            color={color!} win={win} loss={loss} disconnect={playerDisconnect} remoteVideo={remoteVideo} localVideo={localVideo} chessboardOptions={chessboardOptions} history={history} SendVideo={SendVideo} />}
     </div>
 }

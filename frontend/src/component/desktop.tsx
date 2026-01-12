@@ -5,6 +5,7 @@ import { ArrowRight } from "lucide-react"
 import GameNotification from "./player_left";
 import AestheticWin from "./win";
 import AestheticLoss from "./loss";
+import Toast from "./caramranotfound";
 
 const chessPieces = [
     { letter: 'K', name: 'King', unicode: { white: '♔', black: '♚' } },
@@ -14,14 +15,23 @@ const chessPieces = [
     { letter: 'N', name: 'Knight', unicode: { white: '♘', black: '♞' } },
     { letter: 'P', name: 'Pawn', unicode: { white: '♙', black: '♟' } },
 ];
-export function Desktop({remoteVideo, win , loss,  localVideo,chessboardOptions,history,SendVideo,color, disconnect}:compType){
+export function Desktop({ remoteVideo, camaraNotFound, win, loss, localVideo, chessboardOptions, history, SendVideo, color, disconnect }: compType) {
     return <div className="bg-gray-950 h-screen min-w-screen grid grid-cols-[50%_50%] gap-5 p-5 justify-center items-center">
-        {disconnect ?  <GameNotification color={color}/> : null }
-       { win ?<AestheticWin  winner={color}/>: null}
-       {loss ? <AestheticLoss losser={color}/> :null}
+        {camaraNotFound ? <Toast
+            
+            
+            type="error"
+            title="Camera Failed"
+            message="Unable to access webcam. Please check permissions."
+            onClose={() => console.log('closed')}
+        /> : null}
+        {disconnect ? <GameNotification color={color} /> : null}
+        {win ? <AestheticWin winner={color} /> : null}
+        {loss ? <AestheticLoss losser={color} /> : null}
         <div className="flex justify-center items-start">
+
             <div className="w-full flex    aspect-square min-h-[90vh] min-w-[90vh] max-w-[80vh]  max-h-[80vh] shadow-2xl rounded-lg overflow-hidden">
-                <Chessboard  options={chessboardOptions} />
+                <Chessboard options={chessboardOptions} />
             </div>
         </div>
         <div className="overflow-y-auto no-scrollbar border flex p-3 flex-col gap-3 border-white/10 rounded-md h-[100%]  ">

@@ -15,5 +15,6 @@ export interface compType {
     win : boolean,
     loss: boolean
     disconnect:boolean,
-    SendVideo: () => void
+    camaraNotFound:boolean,
+    SendVideo: () =>  Promise<boolean>
 }
