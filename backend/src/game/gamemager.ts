@@ -36,9 +36,19 @@ export class GameManager {
     }
     listen(game: Game) {
         Object.values(game.players).forEach((player) => {
-            player.on('close', (event)=>{
-                console.log(event.valueOf())
-                console.log('end')
+            player.on('close', (event) => {
+                console.log(event)
+                try{
+                    game.players.black.send(JSON.stringify({
+                        type: "game-over"
+                    }))
+                }
+                catch(e){
+                    console.log(e)
+                    game.players.white.send(JSON.stringify({
+                        type: "game-over"
+                    }))
+                }
                 this.handleDisconnect(game)
             });
             player.on("message", (data) => {
@@ -69,7 +79,7 @@ export class GameManager {
                         console.log(e)
                     }
                 }
-               
+
                 else if (msg.type === "offer") {
                     console.log("Relaying Offer");
                     this.relayToOpponent(game, player, {

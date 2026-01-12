@@ -1,13 +1,10 @@
 import type { RefObject } from "react";
 import { useChessSound } from "../hooks/sound";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import { Chess, type Square } from "chess.js";
-import { Chessboard, type SquareHandlerArgs } from "react-chessboard";
-import MediaControlBar from "./media_contrller";
+import { type SquareHandlerArgs } from "react-chessboard";
 import { type historyType } from "@/types/type";
 import { useMediaQuery } from 'react-responsive'
-import { ArrowBigLeft, ArrowBigRight, ArrowRight, ArrowUpWideNarrow } from "lucide-react";
-import scrollbar from "tailwind-scrollbar";
 import { Mobile } from "./mobile";
 import { Desktop } from "./desktop";
 
@@ -18,14 +15,17 @@ export function ChessGame({ socket, send, color }: { color: "white" | "black" | 
     const pcRef = useRef<RTCPeerConnection>(null)
     const remoteVideo = useRef<HTMLVideoElement>(null);
     const [game, setGame] = useState(new Chess());
-    const { playMove, playCapture } = useChessSound();
+    const { playMove, playCapture, playCheck } = useChessSound();
     const [history, setHistory] = useState<historyType[]>([]);
     const scrollContainerRef = useRef<HTMLDivElement>(null);
     const [moveFrom, setMoveFrom] = useState('');
     const [optionSquares, setOptionSquares] = useState({});
     const [videoOn, setVideoOn] = useState(true);
     const [audioOn, setAudioOn] = useState(true);
+    const [playerDisconnect, setPlayerDisconnect] = useState(false);
     const [stream, setStream] = useState<MediaStream | null>(null);
+
+
     useEffect(() => {
         if (scrollContainerRef.current) {
             scrollContainerRef.current.scrollLeft = scrollContainerRef.current.scrollWidth;
@@ -46,8 +46,9 @@ export function ChessGame({ socket, send, color }: { color: "white" | "black" | 
         }
         const newSquares: Record<string, React.CSSProperties> = {};
         for (const move of moves) {
+
             newSquares[move.to] = {
-                background: game.get(move.to) && game.get(move.to)?.color !== game.get(square)?.color ? 'radial-gradient(circle, rgba(0,0,0,.1) 85%, transparent 85%)' // larger circle for capturing
+                background: game.get(move.to) && game.get(move.to)?.color !== game.get(square)?.color ? 'radial-gradient(circle, rgba(0,0,0,.1) 85%, transparent 85%)'
                     : 'radial-gradient(circle, rgba(0,0,0,.1) 25%, transparent 25%)',
                 borderRadius: '50%'
             };
@@ -85,7 +86,10 @@ export function ChessGame({ socket, send, color }: { color: "white" | "black" | 
                     sdp: ans
                 }))
             }
-
+            else if (msg.type == "game-over") {
+                console.log("didconnect")
+                setPlayerDisconnect(true)
+            }
             else if (msg.type === "ice-candidate" && pcRef.current) {
                 console.log("Getting ice")
                 await pcRef.current.addIceCandidate(msg.candidate)
@@ -110,6 +114,25 @@ export function ChessGame({ socket, send, color }: { color: "white" | "black" | 
 
         }
     }, [])
+
+    const kingSquareInCheck = useMemo(() => {
+        // if (!game.inCheck()) return null;
+
+        const board = game.board();
+        const turn = game.turn(); // 'w' or 'b'
+        console.log(turn)
+
+        for (let row = 0; row < 8; row++) {
+            for (let col = 0; col < 8; col++) {
+                const piece = board[row]![col];
+                console.log(piece)
+                if (piece && piece.type === "k" && piece.color === turn) {
+                    return String.fromCharCode(97 + col) + (8 - row);
+                }
+            }
+        }
+        return null;
+    }, [game]);
 
     function onSquareClick({
         square,
@@ -155,11 +178,24 @@ export function ChessGame({ socket, send, color }: { color: "white" | "black" | 
                 to: square,
                 promotion: 'q'
             });
+            if (move === null) {
+                setOptionSquares({
+                    [moveFrom]: { background: "rgba(255, 0, 0, 0.7)" }
+                });
+                setTimeout(() => {
+                    setOptionSquares({});
+                }, 500);
+
+                return false;
+            }
             if (move) {
                 if (move.isCapture()) {
                     playCapture()
                 }
+                else if (game.inCheck()) {
 
+                    playCapture()
+                }
                 else {
                     playMove()
                 }
@@ -223,32 +259,39 @@ export function ChessGame({ socket, send, color }: { color: "white" | "black" | 
         }
     }
 
-  const toggleVideo = (): void => {
-    if (!stream) return;
+    const toggleVideo = (): void => {
+        if (!stream) return;
 
-    stream.getVideoTracks().forEach((track: MediaStreamTrack) => {
-      track.enabled = !track.enabled;
-      setVideoOn(track.enabled);
-    });
-  };
+        stream.getVideoTracks().forEach((track: MediaStreamTrack) => {
+            track.enabled = !track.enabled;
+            setVideoOn(track.enabled);
+        });
+    };
 
-  const toggleAudio = (): void => {
-    if (!stream) return;
+    const toggleAudio = (): void => {
+        if (!stream) return;
 
-    stream.getAudioTracks().forEach((track: MediaStreamTrack) => {
-      track.enabled = !track.enabled;
-      setAudioOn(track.enabled);
-    });
-  };
+        stream.getAudioTracks().forEach((track: MediaStreamTrack) => {
+            track.enabled = !track.enabled;
+            setAudioOn(track.enabled);
+        });
+    };
+    const customStyles = {
+        e4: { backgroundColor: 'rgba(255, 255, 0, 0.4)' },
+        d4: { boxShadow: 'inset 0 0 1px 4px rgba(255, 0, 0, 0.75)' },
+    }
     const chessboardOptions = {
         allowDragging: false,
         onSquareClick,
         position: game.fen(),
         squareStyles: optionSquares,
         boardOrientation: color,
-        arePiecesDraggable: game.turn() === (color === "white" ? "w" : "b")
+        arePiecesDraggable: game.turn() === (color === "white" ? "w" : "b"),
+
+        id: 'square-styles'
     };
     return <div>
-        {isMobile ? <Mobile remoteVideo={remoteVideo} localVideo={localVideo} chessboardOptions={chessboardOptions} history={history} SendVideo={SendVideo} /> : <Desktop remoteVideo={remoteVideo} localVideo={localVideo} chessboardOptions={chessboardOptions} history={history} SendVideo={SendVideo} />}
+        {isMobile ? <Mobile remoteVideo={remoteVideo} color={color!} disconnect={playerDisconnect} localVideo={localVideo} chessboardOptions={chessboardOptions} history={history} SendVideo={SendVideo} /> : <Desktop
+            color={color!} disconnect={playerDisconnect} remoteVideo={remoteVideo} localVideo={localVideo} chessboardOptions={chessboardOptions} history={history} SendVideo={SendVideo} />}
     </div>
 }

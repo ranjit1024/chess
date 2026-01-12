@@ -1,10 +1,11 @@
 import { Chessboard } from "react-chessboard"
 import type { compType  } from "@/types/type";
 import MediaControlBar from "./media_contrller";
-export function Mobile({remoteVideo,localVideo,chessboardOptions,history,SendVideo}:compType){
+import CenterGameNotification from "./player_left";
+export function Mobile({remoteVideo,localVideo,chessboardOptions,history,SendVideo, color, disconnect}:compType){
     return <div className="h-screen w-screen bg-gray-950 flex flex-col">
-            
                 {/* Video Section - Fixed height at top */}
+                {disconnect ? <CenterGameNotification color={color}/>:null}
                 <div className="h-52 flex gap-2 p-2 bg-gray-900 border-b border-white/10">
                   {/* Opponent Video */}
                   <div className="flex-1 rounded-lg overflow-hidden border-2 border-white/30 bg-gray-800 relative">

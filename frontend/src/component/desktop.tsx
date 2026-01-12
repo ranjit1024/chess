@@ -2,6 +2,7 @@ import { Chessboard } from "react-chessboard"
 import { type compType } from "@/types/type"
 import MediaControlBar from "./media_contrller"
 import { ArrowRight } from "lucide-react"
+import GameNotification from "./player_left";
 const chessPieces = [
     { letter: 'K', name: 'King', unicode: { white: '♔', black: '♚' } },
     { letter: 'Q', name: 'Queen', unicode: { white: '♕', black: '♛' } },
@@ -10,13 +11,13 @@ const chessPieces = [
     { letter: 'N', name: 'Knight', unicode: { white: '♘', black: '♞' } },
     { letter: 'P', name: 'Pawn', unicode: { white: '♙', black: '♟' } },
 ];
-export function Desktop({remoteVideo,localVideo,chessboardOptions,history,SendVideo}:compType){
+export function Desktop({remoteVideo , localVideo,chessboardOptions,history,SendVideo,color, disconnect}:compType){
     return <div className="bg-gray-950 h-screen min-w-screen grid grid-cols-[50%_50%] gap-5 p-5 justify-center items-center">
-
+        {disconnect ?  <GameNotification color={color}/> : null }
 
         <div className="flex justify-center items-start">
             <div className="w-full flex    aspect-square min-h-[90vh] min-w-[90vh] max-w-[80vh]  max-h-[80vh] shadow-2xl rounded-lg overflow-hidden">
-                <Chessboard options={chessboardOptions} />
+                <Chessboard  options={chessboardOptions} />
             </div>
         </div>
         <div className="overflow-y-auto no-scrollbar border flex p-3 flex-col gap-3 border-white/10 rounded-md h-[100%]  ">
