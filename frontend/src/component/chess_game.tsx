@@ -232,6 +232,7 @@ export function ChessGame({ socket, send, color }: { color: "white" | "black" | 
             })
             localStream.current = media
             const videoTrack = media.getVideoTracks()[0];
+            const audioTrack = media.getAudioTracks()[0];
             if (localVideo.current) {
                 localVideo.current.srcObject = media;
             }
@@ -245,9 +246,10 @@ export function ChessGame({ socket, send, color }: { color: "white" | "black" | 
                     sdp: senderoffer
                 }))
             }
-            if (videoTrack) {
+            if (videoTrack && audioTrack) {
                 console.log("adding meddsf")
                 pcRef.current.addTrack(videoTrack, media)
+                pcRef.current.addTrack(audioTrack, media)
             }
             return true
         }

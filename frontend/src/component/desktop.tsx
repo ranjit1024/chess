@@ -1,7 +1,8 @@
 import { Chessboard } from "react-chessboard"
 import { type compType } from "@/types/type"
 import { ControlButton } from "./media_contrller"
-import { ArrowRight, Mic, MicOff, Video, VideoOff } from "lucide-react"
+// Added Volume icons
+import { ArrowRight, Mic, MicOff, Video, VideoOff, Volume2, VolumeX } from "lucide-react"
 import GameNotification from "./player_left";
 import AestheticWin from "./win";
 import AestheticLoss from "./loss";
@@ -33,17 +34,23 @@ export function Desktop({
 }: compType) {
     const [startCamara, setStartCmara] = useState<boolean>(false);
     const [isCamaraon, setIscamaraOn] = useState<boolean>(false);
-    const [isMicadded, setIsMicadded] = useState(true);
-    const [ismute, setismute] = useState<boolean>(true);
+    
+    // Local Mic State (Sending Audio)
+    const [isMicOn, setIsMicOn] = useState(true);
+    
+    // Remote Speaker State (Receiving Audio) - Default to false (Unmuted) to hear them
+    const [isRemoteMuted, setIsRemoteMuted] = useState<boolean>(false);
 
     useEffect(() => {
         async function playVideos() {
             if (!remoteVideo.current) return;
             try {
+                // We try to play. If browser blocks unmuted autoplay, catch block handles it.
                 await remoteVideo.current.play();
-                remoteVideo.current.muted = false;
             } catch (error) {
                 console.error("Autoplay failed:", error);
+                // Optional: If autoplay fails, you might force mute temporarily
+                // setIsRemoteMuted(true); 
             }
         }
         playVideos();
@@ -70,21 +77,36 @@ export function Desktop({
             </div>
             
             <div className="overflow-y-auto no-scrollbar border flex p-3 flex-col gap-3 border-white/10 rounded-md h-[100%]">
+                {/* LOCAL VIDEO (You) */}
                 <div className="relative rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 shadow-2xl aspect-video">
+                    {/* Local video is always muted for yourself so you don't hear an echo */}
                     <video ref={localVideo} autoPlay muted playsInline className="w-full h-full object-cover" />
                     <div className="absolute top-2 left-2 bg-black/60 px-2 py-1 rounded text-xs text-white font-medium">
                         You
                     </div>
                 </div>
                 
+                {/* REMOTE VIDEO (Opponent) */}
                 <div className="relative rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 shadow-2xl aspect-video">
-                    <video ref={remoteVideo} autoPlay playsInline muted className="w-full h-full object-cover" />
+                    {/* CRITICAL FIX: 
+                        1. Removed hardcoded 'muted' 
+                        2. Added muted={isRemoteMuted}
+                    */}
+                    <video 
+                        ref={remoteVideo} 
+                        autoPlay 
+                        playsInline 
+                        muted={isRemoteMuted} 
+                        className="w-full h-full object-cover" 
+                    />
                     <div className="absolute top-2 left-2 bg-black/60 px-2 py-1 rounded text-xs text-white font-medium">
                         Opponent
                     </div>
                 </div>
 
+                {/* CONTROLS */}
                 <div className="bg-gray-800/40 border flex justify-center gap-3 p-2 border-gray-700 rounded-lg">
+                    {/* VIDEO TOGGLE */}
                     {startCamara ? (
                         <ControlButton 
                             isActive={isCamaraon}
@@ -118,24 +140,39 @@ export function Desktop({
                         </ControlButton>
                     )}
                     
+                    {/* MIC TOGGLE (YOUR AUDIO) */}
                     <ControlButton 
-                        isActive={!ismute}
+                        isActive={isMicOn}
                         onClick={() => {
-                            console.log('Toggle mute');
-                            if (remoteVideo.current) {
-                                const newMuteState = !ismute;
-                                remoteVideo.current.muted = newMuteState;
-                                setismute(newMuteState);
-                            }
+                            // This now correctly calls the prop to toggle Local Audio tracks
+                            toggleAudio(); 
+                            setIsMicOn(!isMicOn);
                         }} 
                         label="mic"
                     >
                         <div>
-                            {ismute ? <MicOff size={20} /> : <Mic size={20} />}
+                            {isMicOn ? <Mic size={20} /> : <MicOff size={20} />}
+                        </div>
+                    </ControlButton>
+
+                    {/* NEW: SPEAKER TOGGLE (THEIR AUDIO) */}
+                    <ControlButton 
+                        isActive={!isRemoteMuted}
+                        onClick={() => {
+                            if (remoteVideo.current) {
+                                // Toggle remote video mute state
+                                setIsRemoteMuted(!isRemoteMuted);
+                            }
+                        }} 
+                        label="speaker"
+                    >
+                        <div>
+                            {!isRemoteMuted ? <Volume2 size={20} /> : <VolumeX size={20} />}
                         </div>
                     </ControlButton>
                 </div>
                 
+                {/* HISTORY SECTION */}
                 <div className="bg-slate-800/20 backdrop-blur-xl rounded-2xl border border-slate-700 shadow-2xl flex flex-col">
                     <div className="border-b border-slate-700 p-5">
                         <div className="flex items-center justify-between">
