@@ -1,7 +1,6 @@
 import { Chessboard } from "react-chessboard"
 import { type compType } from "@/types/type"
 import { ControlButton } from "./media_contrller"
-// Added Volume icons
 import { ArrowRight, Mic, MicOff, Video, VideoOff, Volume2, VolumeX } from "lucide-react"
 import GameNotification from "./player_left";
 import AestheticWin from "./win";
@@ -34,23 +33,21 @@ export function Desktop({
 }: compType) {
     const [startCamara, setStartCmara] = useState<boolean>(false);
     const [isCamaraon, setIscamaraOn] = useState<boolean>(false);
-    
-    // Local Mic State (Sending Audio)
+
     const [isMicOn, setIsMicOn] = useState(true);
     
-    // Remote Speaker State (Receiving Audio) - Default to false (Unmuted) to hear them
+   
     const [isRemoteMuted, setIsRemoteMuted] = useState<boolean>(false);
 
     useEffect(() => {
         async function playVideos() {
             if (!remoteVideo.current) return;
             try {
-                // We try to play. If browser blocks unmuted autoplay, catch block handles it.
+   
                 await remoteVideo.current.play();
             } catch (error) {
                 console.error("Autoplay failed:", error);
-                // Optional: If autoplay fails, you might force mute temporarily
-                // setIsRemoteMuted(true); 
+              
             }
         }
         playVideos();
@@ -77,21 +74,18 @@ export function Desktop({
             </div>
             
             <div className="overflow-y-auto no-scrollbar border flex p-3 flex-col gap-3 border-white/10 rounded-md h-[100%]">
-                {/* LOCAL VIDEO (You) */}
+
                 <div className="relative rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 shadow-2xl aspect-video">
-                    {/* Local video is always muted for yourself so you don't hear an echo */}
+                    
                     <video ref={localVideo} autoPlay muted playsInline className="w-full h-full object-cover" />
                     <div className="absolute top-2 left-2 bg-black/60 px-2 py-1 rounded text-xs text-white font-medium">
                         You
                     </div>
                 </div>
                 
-                {/* REMOTE VIDEO (Opponent) */}
+         
                 <div className="relative rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 shadow-2xl aspect-video">
-                    {/* CRITICAL FIX: 
-                        1. Removed hardcoded 'muted' 
-                        2. Added muted={isRemoteMuted}
-                    */}
+                  
                     <video 
                         ref={remoteVideo} 
                         autoPlay 
@@ -104,9 +98,9 @@ export function Desktop({
                     </div>
                 </div>
 
-                {/* CONTROLS */}
+              
                 <div className="bg-gray-800/40 border flex justify-center gap-3 p-2 border-gray-700 rounded-lg">
-                    {/* VIDEO TOGGLE */}
+                   
                     {startCamara ? (
                         <ControlButton 
                             isActive={isCamaraon}
@@ -140,7 +134,7 @@ export function Desktop({
                         </ControlButton>
                     )}
                     
-                    {/* MIC TOGGLE (YOUR AUDIO) */}
+                    
                     <ControlButton 
                         isActive={isMicOn}
                         onClick={() => {
@@ -155,12 +149,11 @@ export function Desktop({
                         </div>
                     </ControlButton>
 
-                    {/* NEW: SPEAKER TOGGLE (THEIR AUDIO) */}
                     <ControlButton 
                         isActive={!isRemoteMuted}
                         onClick={() => {
                             if (remoteVideo.current) {
-                                // Toggle remote video mute state
+                             
                                 setIsRemoteMuted(!isRemoteMuted);
                             }
                         }} 
@@ -172,7 +165,7 @@ export function Desktop({
                     </ControlButton>
                 </div>
                 
-                {/* HISTORY SECTION */}
+
                 <div className="bg-slate-800/20 backdrop-blur-xl rounded-2xl border border-slate-700 shadow-2xl flex flex-col">
                     <div className="border-b border-slate-700 p-5">
                         <div className="flex items-center justify-between">

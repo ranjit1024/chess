@@ -1,41 +1,56 @@
 import { Chessboard } from "react-chessboard"
 import type { compType } from "@/types/type";
-import {ControlButton} from "./media_contrller"
+import { ControlButton } from "./media_contrller"
 import GameNotification from "./player_left";
 import AestheticWin from "./win";
 import AestheticLoss from "./loss";
 import Toast from "./caramranotfound";
-import { ArrowRight, Mic, MicOff, VideoIcon, VideoOff } from "lucide-react"
-import { useState } from "react";
-export function Mobile({ remoteVideo, camaraNotFound,  win, loss, localVideo, chessboardOptions, history, SendVideo,toggleVideo,toggleAudio, color, disconnect }: compType) {
-     const [startCamara, setStartCmara] = useState<boolean>(false);
-      const [isCamaraon, setIscamaraOn] = useState<boolean>(false);
-      const [isMicadded, setIsMicadded] = useState(false);
-      const [ismute,setismute] = useState(true)
+import { useState,useEffect } from "react";
+import {  Mic, MicOff, Video, VideoOff, Volume2, VolumeX } from "lucide-react"
+export function Mobile({ remoteVideo, camaraNotFound, win, loss, localVideo, chessboardOptions, history, SendVideo, toggleVideo, toggleAudio, color, disconnect }: compType) {
+
+  const [startCamara, setStartCmara] = useState<boolean>(false);
+  const [isCamaraon, setIscamaraOn] = useState<boolean>(false);
+
+  const [isMicOn, setIsMicOn] = useState(true);
+  useEffect(() => {
+    async function playVideos() {
+      if (!remoteVideo.current) return;
+      try {
+        await remoteVideo.current.play();
+      } catch (error) {
+        console.error("Autoplay failed:", error);
+
+      }
+    }
+    playVideos();
+  }, [remoteVideo]);
+
+  const [isRemoteMuted, setIsRemoteMuted] = useState<boolean>(false);
   return <div className="h-screen w-screen bg-gray-950 flex flex-col">
-    {/* Video Section - Fixed height at top */}
+
     {camaraNotFound ? <Toast
-            type="error"
-            title="Camera Failed"
-            message="Unable to access webcam. Please check permissions."
-            onClose={() => console.log('closed')}
-        /> : null}
-        
+      type="error"
+      title="Camera Failed"
+      message="Unable to access webcam. Please check permissions."
+      onClose={() => console.log('closed')}
+    /> : null}
+
     {disconnect ? <GameNotification color={color} /> : null}
     {win ? <AestheticWin winner={color} /> : null}
     {loss ? <AestheticLoss losser={color} /> : null}
     <div className="h-52 flex gap-2 p-2 bg-gray-900 border-b border-white/10">
-      {/* Opponent Video */}
+
       <div className="flex-1 rounded-lg overflow-hidden border-2 border-white/30 bg-gray-800 relative">
-        <video ref={remoteVideo} autoPlay muted={ismute} playsInline className="w-full h-full object-cover" />
+        <video ref={remoteVideo} autoPlay muted={isRemoteMuted} playsInline className="w-full h-full object-cover" />
         <div className="absolute top-2 left-2 bg-black/60 px-2 py-1 rounded text-xs text-white font-medium">
           Opponent
         </div>
       </div>
 
-      {/* Your Video */}
+    
       <div className="flex-1 rounded-lg overflow-hidden border-2 border-blue-500 bg-gray-800 relative">
-        <video ref={localVideo} autoPlay muted={true} playsInline  className="w-full h-full object-cover" />
+        <video ref={localVideo} autoPlay muted={true} playsInline className="w-full h-full object-cover" />
         <div className="absolute top-2 left-2 bg-black/60 px-2 py-1 rounded text-xs text-white font-medium">
           You
         </div>
@@ -44,14 +59,14 @@ export function Mobile({ remoteVideo, camaraNotFound,  win, loss, localVideo, ch
       </div>
     </div>
 
-    {/* Chess Board - Takes remaining space */}
+
     <div className="flex-1 flex items-center justify-center p-3">
       <div className="aspect-square w-full max-w-md">
         <Chessboard options={chessboardOptions} />
       </div>
     </div>
 
-    {/* Move History - Fixed height at bottom */}
+
     <div className="h-14 bg-gray-900 border-t border-white/10 p-2">
       <div
 
@@ -73,55 +88,71 @@ export function Mobile({ remoteVideo, camaraNotFound,  win, loss, localVideo, ch
         ))}
       </div>
     </div>
-    <div className="flex gap-2 p-2 bg-gray-950 border-t border-white/10 items-center justify-center">
-        {
-                startCamara ? <ControlButton isActive={isCamaraon} 
-                onClick={async ()=>{
-                    setIscamaraOn(!isCamaraon);
-                    toggleVideo()
-                }} label="fsd">
-                    
-                   <div>
-                    {
-                        isCamaraon && startCamara ? <VideoIcon size={20}/> : <VideoOff size={20}/>
-                    }
-                    </div></ControlButton>
-                
-                 :
-                 <ControlButton isActive={startCamara} 
-                onClick={async ()=>{
-                  
-                    const status = await SendVideo();
-                    if(status === true){
-                        setStartCmara(true);
-                        setIscamaraOn(true)
-                       
-                    }
-                    else{
-                        setStartCmara(false)
-                    }
+    <div className="bg-gray-800/40 border flex justify-center gap-3 p-2 border-gray-700 rounded-lg">
                    
-                }} label="fsd"><div>
-                    {
-                        startCamara ? <VideoIcon size={20}/> : <VideoOff size={20}/>
-                    }
-                    </div></ControlButton>
-            }
-            {
-                <ControlButton isActive={ismute} 
-                onClick={async ()=>{
-                    setismute(true);
-                    toggleAudio()
-                }} label="fsd">
-                
-                   <div>
-                    {
-                        ismute  ? <Mic size={20}/> : <MicOff size={20}/>
-                    }
-                    </div></ControlButton> 
-            }
-            
-    </div>
+                    {startCamara ? (
+                        <ControlButton 
+                            isActive={isCamaraon}
+                            onClick={async () => {
+                                setIscamaraOn(!isCamaraon);
+                                toggleVideo();
+                            }} 
+                            label="video"
+                        >
+                            <div>
+                                {isCamaraon && startCamara ? <Video size={20} /> : <VideoOff size={20} />}
+                            </div>
+                        </ControlButton>
+                    ) : (
+                        <ControlButton 
+                            isActive={startCamara}
+                            onClick={async () => {
+                                const status = await SendVideo();
+                                if (status === true) {
+                                    setStartCmara(true);
+                                    setIscamaraOn(true);
+                                } else {
+                                    setStartCmara(false);
+                                }
+                            }} 
+                            label="video"
+                        >
+                            <div>
+                                {startCamara ? <Video size={20} /> : <VideoOff size={20} />}
+                            </div>
+                        </ControlButton>
+                    )}
+                    
+                    
+                    <ControlButton 
+                        isActive={isMicOn}
+                        onClick={() => {
+                            // This now correctly calls the prop to toggle Local Audio tracks
+                            toggleAudio(); 
+                            setIsMicOn(!isMicOn);
+                        }} 
+                        label="mic"
+                    >
+                        <div>
+                            {isMicOn ? <Mic size={20} /> : <MicOff size={20} />}
+                        </div>
+                    </ControlButton>
+
+                    <ControlButton 
+                        isActive={!isRemoteMuted}
+                        onClick={() => {
+                            if (remoteVideo.current) {
+                             
+                                setIsRemoteMuted(!isRemoteMuted);
+                            }
+                        }} 
+                        label="speaker"
+                    >
+                        <div>
+                            {!isRemoteMuted ? <Volume2 size={20} /> : <VolumeX size={20} />}
+                        </div>
+                    </ControlButton>
+                </div>
 
   </div>
 }
