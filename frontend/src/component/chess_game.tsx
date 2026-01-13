@@ -20,13 +20,12 @@ export function ChessGame({ socket, send, color }: { color: "white" | "black" | 
     const scrollContainerRef = useRef<HTMLDivElement>(null);
     const [moveFrom, setMoveFrom] = useState('');
     const [optionSquares, setOptionSquares] = useState({});
-    const [videoOn, setVideoOn] = useState(true);
-    const [audioOn, setAudioOn] = useState(true);
+
     const [playerDisconnect, setPlayerDisconnect] = useState(false);
     const localStream = useRef<MediaStream | null>(null);
     const [win, setWin] = useState<boolean>(false)
     const [loss, setLoss] = useState<boolean>(false);
-    const [isMute, setIsmute] = useState<boolean>(false)
+    const remoteStreamRef = useRef<MediaStream | null>(null); 
     const [camaraNotFound, setcamaraNotFound] = useState(false);
     useEffect(() => {
         if (scrollContainerRef.current) {
@@ -73,6 +72,7 @@ export function ChessGame({ socket, send, color }: { color: "white" | "black" | 
         pcRef.current.ontrack = (track) => {
             const remoteStream = track.streams[0]
             if (remoteVideo.current && remoteStream) {
+                remoteStreamRef.current = remoteStream
                 console.log('Steram')
                 remoteVideo.current.srcObject = remoteStream
             }
@@ -236,7 +236,7 @@ export function ChessGame({ socket, send, color }: { color: "white" | "black" | 
             if (localVideo.current) {
                 localVideo.current.srcObject = media;
             }
-            setVideoOn(true)
+           
 
             pcRef.current.onnegotiationneeded = async () => {
                 const senderoffer = await pcRef.current!.createOffer();
@@ -275,7 +275,7 @@ export function ChessGame({ socket, send, color }: { color: "white" | "black" | 
         const videoTrack = localStream.current.getVideoTracks()[0];
         if (videoTrack) {
             videoTrack.enabled = !videoTrack.enabled;
-            setVideoOn(videoTrack.enabled);
+ 
         }
     }
     const toggleAudio = (): void => {
@@ -284,7 +284,7 @@ export function ChessGame({ socket, send, color }: { color: "white" | "black" | 
         const videoTrack = localStream.current.getAudioTracks()[0];
         if (videoTrack) {
             videoTrack.enabled = !videoTrack.enabled;
-            setAudioOn(videoTrack.enabled);
+
         }
     };
 
@@ -298,8 +298,9 @@ export function ChessGame({ socket, send, color }: { color: "white" | "black" | 
         id: 'square-styles'
     };
     return <div>
-        {isMobile ? <Mobile toggleAudio={toggleAudio} camaraNotFound={camaraNotFound} win={win} loss={loss} remoteVideo={remoteVideo} color={color!} disconnect={playerDisconnect} localVideo={localVideo} chessboardOptions={chessboardOptions} history={history} SendVideo={SendVideo} toggleVideo={toggleVideo} /> :
+        {isMobile ? <Mobile remoteStream={remoteStreamRef} toggleAudio={toggleAudio} camaraNotFound={camaraNotFound} win={win} loss={loss} remoteVideo={remoteVideo} color={color!} disconnect={playerDisconnect} localVideo={localVideo} chessboardOptions={chessboardOptions} history={history} SendVideo={SendVideo} toggleVideo={toggleVideo} /> :
             <Desktop
+            remoteStream={remoteStreamRef}
                 toggleAudio={toggleAudio}
                 camaraNotFound={camaraNotFound}
                 toggleVideo={toggleVideo}

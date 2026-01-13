@@ -7,10 +7,11 @@ export interface historyType {
     color: "b" | "w"
 }
 export interface compType {
-    remoteVideo: RefObject<HTMLVideoElement | null>
-    localVideo: RefObject<HTMLVideoElement | null>
-    chessboardOptions: ChessboardOptions
-    history: historyType[]
+    remoteVideo: RefObject<HTMLVideoElement | null>,
+    localVideo: RefObject<HTMLVideoElement | null>,
+    remoteStream : RefObject<MediaStream | null>,
+    chessboardOptions: ChessboardOptions,
+    history: historyType[],
     color: "white" | "black",
     win: boolean,
     loss: boolean

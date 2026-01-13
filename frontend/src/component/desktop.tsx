@@ -29,7 +29,8 @@ export function Desktop({
     history, 
     SendVideo, 
     color, 
-    disconnect 
+    disconnect ,
+    remoteStream
 }: compType) {
     const [startCamara, setStartCmara] = useState<boolean>(false);
     const [isCamaraon, setIscamaraOn] = useState<boolean>(false);
@@ -41,17 +42,17 @@ export function Desktop({
 
     useEffect(() => {
         async function playVideos() {
-            if (!remoteVideo.current) return;
-            try {
-   
-                await remoteVideo.current.play();
-            } catch (error) {
-                console.error("Autoplay failed:", error);
-              
+            try{
+                if(remoteVideo.current && remoteStream.current){
+                    await remoteVideo.current.play()
+                }
+            }
+            catch(e){
+                console.log(e)
             }
         }
         playVideos();
-    }, [remoteVideo]);
+    }, [remoteStream.current]);
 
     return (
         <div className="bg-gray-950 h-screen min-w-screen grid grid-cols-[50%_50%] gap-5 p-5 justify-center items-center">
