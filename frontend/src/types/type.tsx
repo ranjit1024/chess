@@ -1,4 +1,4 @@
-import { type RefObject } from "react";
+import { type RefObject, type Dispatch } from "react";
 import { type ChessboardOptions } from "react-chessboard";
 
 export interface historyType {
@@ -12,9 +12,11 @@ export interface compType {
     chessboardOptions: ChessboardOptions
     history: historyType[]
     color: "white" | "black",
-    win : boolean,
+    win: boolean,
     loss: boolean
-    disconnect:boolean,
-    camaraNotFound:boolean,
-    SendVideo: () =>  Promise<boolean>
+    disconnect: boolean,
+    camaraNotFound: boolean,
+    toggleVideo: () => void;
+    toggleAudio: () => void;
+    SendVideo: () => Promise<boolean>
 }

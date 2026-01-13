@@ -23,10 +23,10 @@ export function ChessGame({ socket, send, color }: { color: "white" | "black" | 
     const [videoOn, setVideoOn] = useState(true);
     const [audioOn, setAudioOn] = useState(true);
     const [playerDisconnect, setPlayerDisconnect] = useState(false);
-    const [stream, setStream] = useState<MediaStream | null>(null);
     const localStream = useRef<MediaStream | null>(null);
     const [win, setWin] = useState<boolean>(false)
     const [loss, setLoss] = useState<boolean>(false);
+    const [isMute, setIsmute] = useState<boolean>(false)
     const [camaraNotFound, setcamaraNotFound] = useState(false);
     useEffect(() => {
         if (scrollContainerRef.current) {
@@ -216,7 +216,8 @@ export function ChessGame({ socket, send, color }: { color: "white" | "black" | 
         setMoveFrom('');
         setOptionSquares({});
     }
-    async function SendVideo(): Promise<boolean> {
+
+        async function SendVideo(): Promise<boolean> {
         if (!pcRef.current) return false;
 
         console.log('fasdf')
@@ -257,30 +258,32 @@ export function ChessGame({ socket, send, color }: { color: "white" | "black" | 
             return false;
         }
     }
-    useEffect(()=>{
+
+    useEffect(() => {
         const timer = setTimeout(() => {
-            if(camaraNotFound === true){
+            if (camaraNotFound === true) {
                 setcamaraNotFound(false)
             }
-        }, 4000);
-        return ()=>clearTimeout(timer)
-    },[camaraNotFound])
+        }, 2000);
+        return () => clearTimeout(timer)
+    }, [camaraNotFound])
     function toggleVideo() {
         if (!localStream.current) return;
 
-        const videoTrack = localStream.current.getAudioTracks()[0];
+        const videoTrack = localStream.current.getVideoTracks()[0];
         if (videoTrack) {
             videoTrack.enabled = !videoTrack.enabled;
             setVideoOn(videoTrack.enabled);
         }
     }
     const toggleAudio = (): void => {
-        if (!stream) return;
+        if (!localStream.current) return;
 
-        stream.getAudioTracks().forEach((track: MediaStreamTrack) => {
-            track.enabled = !track.enabled;
-            setAudioOn(track.enabled);
-        });
+        const videoTrack = localStream.current.getAudioTracks()[0];
+        if (videoTrack) {
+            videoTrack.enabled = !videoTrack.enabled;
+            setAudioOn(videoTrack.enabled);
+        }
     };
 
     const chessboardOptions = {
@@ -293,9 +296,11 @@ export function ChessGame({ socket, send, color }: { color: "white" | "black" | 
         id: 'square-styles'
     };
     return <div>
-        {isMobile ? <Mobile camaraNotFound={camaraNotFound} win={win} loss={loss} remoteVideo={remoteVideo} color={color!} disconnect={playerDisconnect} localVideo={localVideo} chessboardOptions={chessboardOptions} history={history} SendVideo={SendVideo} /> : 
-        <Desktop
-        camaraNotFound={camaraNotFound}
-            color={color!} win={win} loss={loss} disconnect={playerDisconnect} remoteVideo={remoteVideo} localVideo={localVideo} chessboardOptions={chessboardOptions} history={history} SendVideo={SendVideo} />}
+        {isMobile ? <Mobile toggleAudio={toggleAudio} camaraNotFound={camaraNotFound} win={win} loss={loss} remoteVideo={remoteVideo} color={color!} disconnect={playerDisconnect} localVideo={localVideo} chessboardOptions={chessboardOptions} history={history} SendVideo={SendVideo} toggleVideo={toggleVideo} /> :
+            <Desktop
+                toggleAudio={toggleAudio}
+                camaraNotFound={camaraNotFound}
+                toggleVideo={toggleVideo}
+                color={color!} win={win} loss={loss} disconnect={playerDisconnect} remoteVideo={remoteVideo} localVideo={localVideo} chessboardOptions={chessboardOptions} history={history} SendVideo={SendVideo} />}
     </div>
 }

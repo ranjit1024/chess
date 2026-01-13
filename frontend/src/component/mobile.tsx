@@ -1,28 +1,41 @@
 import { Chessboard } from "react-chessboard"
 import type { compType } from "@/types/type";
-import MediaControlBar from "./media_contrller";
+import {ControlButton} from "./media_contrller"
 import GameNotification from "./player_left";
 import AestheticWin from "./win";
 import AestheticLoss from "./loss";
-export function Mobile({ remoteVideo, win, loss, localVideo, chessboardOptions, history, SendVideo, color, disconnect }: compType) {
+import Toast from "./caramranotfound";
+import { ArrowRight, Mic, MicOff, VideoIcon, VideoOff } from "lucide-react"
+import { useState } from "react";
+export function Mobile({ remoteVideo, camaraNotFound,  win, loss, localVideo, chessboardOptions, history, SendVideo,toggleVideo,toggleAudio, color, disconnect }: compType) {
+     const [startCamara, setStartCmara] = useState<boolean>(false);
+      const [isCamaraon, setIscamaraOn] = useState<boolean>(false);
+      const [isMicadded, setIsMicadded] = useState(false);
+      const [ismute,setismute] = useState(true)
   return <div className="h-screen w-screen bg-gray-950 flex flex-col">
     {/* Video Section - Fixed height at top */}
+    {camaraNotFound ? <Toast
+            type="error"
+            title="Camera Failed"
+            message="Unable to access webcam. Please check permissions."
+            onClose={() => console.log('closed')}
+        /> : null}
+        
     {disconnect ? <GameNotification color={color} /> : null}
     {win ? <AestheticWin winner={color} /> : null}
     {loss ? <AestheticLoss losser={color} /> : null}
     <div className="h-52 flex gap-2 p-2 bg-gray-900 border-b border-white/10">
       {/* Opponent Video */}
       <div className="flex-1 rounded-lg overflow-hidden border-2 border-white/30 bg-gray-800 relative">
-        <video ref={remoteVideo} autoPlay muted className="w-full h-full object-cover" />
+        <video ref={remoteVideo} autoPlay muted={ismute} playsInline className="w-full h-full object-cover" />
         <div className="absolute top-2 left-2 bg-black/60 px-2 py-1 rounded text-xs text-white font-medium">
           Opponent
         </div>
-
       </div>
 
       {/* Your Video */}
       <div className="flex-1 rounded-lg overflow-hidden border-2 border-blue-500 bg-gray-800 relative">
-        <video ref={localVideo} autoPlay muted className="w-full h-full object-cover" />
+        <video ref={localVideo} autoPlay muted={true} playsInline  className="w-full h-full object-cover" />
         <div className="absolute top-2 left-2 bg-black/60 px-2 py-1 rounded text-xs text-white font-medium">
           You
         </div>
@@ -61,7 +74,53 @@ export function Mobile({ remoteVideo, win, loss, localVideo, chessboardOptions, 
       </div>
     </div>
     <div className="flex gap-2 p-2 bg-gray-950 border-t border-white/10 items-center justify-center">
-      <MediaControlBar startVideo={SendVideo} />
+        {
+                startCamara ? <ControlButton isActive={isCamaraon} 
+                onClick={async ()=>{
+                    setIscamaraOn(!isCamaraon);
+                    toggleVideo()
+                }} label="fsd">
+                    
+                   <div>
+                    {
+                        isCamaraon && startCamara ? <VideoIcon size={20}/> : <VideoOff size={20}/>
+                    }
+                    </div></ControlButton>
+                
+                 :
+                 <ControlButton isActive={startCamara} 
+                onClick={async ()=>{
+                  
+                    const status = await SendVideo();
+                    if(status === true){
+                        setStartCmara(true);
+                        setIscamaraOn(true)
+                       
+                    }
+                    else{
+                        setStartCmara(false)
+                    }
+                   
+                }} label="fsd"><div>
+                    {
+                        startCamara ? <VideoIcon size={20}/> : <VideoOff size={20}/>
+                    }
+                    </div></ControlButton>
+            }
+            {
+                <ControlButton isActive={ismute} 
+                onClick={async ()=>{
+                    setismute(true);
+                    toggleAudio()
+                }} label="fsd">
+                
+                   <div>
+                    {
+                        ismute  ? <Mic size={20}/> : <MicOff size={20}/>
+                    }
+                    </div></ControlButton> 
+            }
+            
     </div>
 
   </div>

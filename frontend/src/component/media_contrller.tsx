@@ -1,60 +1,4 @@
 import React, { useState } from 'react';
-import { Mic, MicOff, Video, VideoOff, PhoneOff, Settings, CameraIcon, CameraOffIcon, TestTube } from 'lucide-react';
-
-export default function MediaControlBar({ startVideo, }: { startVideo: () => Promise<boolean> }) {
-  const [isMicOn, setIsMicOn] = useState(false); // Default matches your image (Off)
-  const [isCameraOn, setIsCameraOn] = useState(false); // Default matches your image (Off)
-  const [camaraOn, setCamaraOn] = useState(false)
-  return (<div className="flex items-center w-full gap-5 justify-center  py-3  ">
-
-
-    {/* Microphone Toggle */}
-    <ControlButton
-      isActive={isMicOn}
-      onClick={() => {
-        setIsMicOn(!isMicOn)
-
-      }}
-      label={isMicOn ? "Mute" : "Unmute"}
-    >
-      {isMicOn ? <Mic size={20} /> : <MicOff size={20} />}
-
-
-    </ControlButton>
-
-{
-  isCameraOn ?   <ControlButton
-      isActive={isCameraOn}
-      onClick={async () => {
-        
-      }}
-      label={isCameraOn ? "Mute" : "Unmute"}
-    >
-      {isCameraOn ? <TestTube size={20} /> : <CameraOffIcon size={20} />}
-    </ControlButton> : 
-  <ControlButton
-      isActive={isCameraOn}
-      onClick={async () => {
-        
-        const status = await startVideo();
-        if (status){
-          setCamaraOn(true)
-          setIsCameraOn(!isCameraOn)
-        } 
-        else { setCamaraOn(false) }
-
-      }}
-      label={isCameraOn ? "Mute" : "Unmute"}
-    >
-      {isCameraOn ? <CameraIcon size={20} /> : <CameraOffIcon size={20} />}
-    </ControlButton>
-}
-
-
-  </div>
-
-  );
-}
 
 // Reusable Button Component for cleaner code
 interface ControlButtonProps {
@@ -64,7 +8,7 @@ interface ControlButtonProps {
   label: string;
 }
 
-function ControlButton({ isActive, onClick, children, label }: ControlButtonProps) {
+export function ControlButton({ isActive, onClick, children, label }: ControlButtonProps) {
   return (
     <button
       onClick={onClick}
