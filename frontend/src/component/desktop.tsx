@@ -38,7 +38,7 @@ export function Desktop({
     const [isMicOn, setIsMicOn] = useState(true);
     
    
-    const [isRemoteMuted, setIsRemoteMuted] = useState<boolean>(false);
+    const [isRemoteMuted, setIsRemoteMuted] = useState<boolean>(true);
 
     useEffect(() => {
         async function playVideos() {
@@ -89,7 +89,7 @@ export function Desktop({
                   
                     <video 
                         ref={remoteVideo} 
-                        autoPlay 
+                        autoPlay
                         playsInline 
                         muted={isRemoteMuted} 
                         className="w-full h-full object-cover" 

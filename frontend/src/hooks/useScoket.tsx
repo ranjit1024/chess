@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-
+// https://chess.ranjitdasproject.space/
 export function useSocket(onMessage: (msg: any) => void) {
   const socketRef = useRef<WebSocket | null>(null);
 
@@ -11,7 +11,7 @@ export function useSocket(onMessage: (msg: any) => void) {
       return
     }
 
-    const socket = new WebSocket(`https://chess.ranjitdasproject.space/?id=${id}`);
+    const socket = new WebSocket(`http://localhost:8080/?id=${id}`);
     socketRef.current = socket;
 
     socket.onmessage = (event) => {

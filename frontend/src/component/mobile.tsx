@@ -14,7 +14,7 @@ export function Mobile({ remoteVideo, remoteStream, camaraNotFound, win, loss, l
   const [isMicOn, setIsMicOn] = useState(true);
 
 
-  const [isRemoteMuted, setIsRemoteMuted] = useState<boolean>(false);
+  const [isRemoteMuted, setIsRemoteMuted] = useState<boolean>(true);
 
     useEffect(() => {
         async function playVideos() {
@@ -45,7 +45,7 @@ export function Mobile({ remoteVideo, remoteStream, camaraNotFound, win, loss, l
     <div className="h-52 flex gap-2 p-2 bg-gray-900 border-b border-white/10">
 
       <div className="flex-1 rounded-lg overflow-hidden border-2 border-white/30 bg-gray-800 relative">
-        <video ref={remoteVideo} autoPlay muted={isRemoteMuted} playsInline className="w-full h-full object-cover" />
+        <video ref={remoteVideo}  muted={isRemoteMuted} playsInline className="w-full h-full object-cover" />
         <div className="absolute top-2 left-2 bg-black/60 px-2 py-1 rounded text-xs text-white font-medium">
           Opponent
         </div>
@@ -53,7 +53,7 @@ export function Mobile({ remoteVideo, remoteStream, camaraNotFound, win, loss, l
 
 
       <div className="flex-1 rounded-lg overflow-hidden border-2 border-blue-500 bg-gray-800 relative">
-        <video ref={localVideo} autoPlay muted={true} playsInline className="w-full h-full object-cover" />
+        <video ref={localVideo} autoPlay  muted={true} playsInline className="w-full h-full object-cover" />
         <div className="absolute top-2 left-2 bg-black/60 px-2 py-1 rounded text-xs text-white font-medium">
           You
         </div>
