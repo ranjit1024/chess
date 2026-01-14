@@ -116,6 +116,7 @@ export function ChessGame({ socket, send, color }: { color: "white" | "black" | 
             else if (msg.type === "CHECKMATE") {
                 setLoss(true)
             }
+          
 
         }
     }, [])
@@ -182,6 +183,7 @@ export function ChessGame({ socket, send, color }: { color: "white" | "black" | 
 
                     playCapture()
                 }
+             
                 else {
                     playMove()
                 }
