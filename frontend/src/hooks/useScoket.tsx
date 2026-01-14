@@ -11,7 +11,7 @@ export function useSocket(onMessage: (msg: any) => void) {
       return
     }
 
-    const socket = new WebSocket(`https://chess.ranjitdasproject.space//?id=${id}`);
+    const socket = new WebSocket(`https://chess.ranjitdasproject.space/?id=${id}`);
     socketRef.current = socket;
 
     socket.onmessage = (event) => {
