@@ -5,17 +5,21 @@ import GameNotification from "./player_left";
 import AestheticWin from "./win";
 import AestheticLoss from "./loss";
 import Toast from "./caramranotfound";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Mic, MicOff, Video, VideoOff, Volume2, VolumeX } from "lucide-react"
 export function Mobile({ remoteVideo, remoteStream, camaraNotFound, win, loss, localVideo, chessboardOptions, history, SendVideo, toggleVideo, toggleAudio, color, disconnect }: compType) {
   const [startCamara, setStartCmara] = useState<boolean>(false);
   const [isCamaraon, setIscamaraOn] = useState<boolean>(false);
 
   const [isMicOn, setIsMicOn] = useState(true);
-
-
   const [isRemoteMuted, setIsRemoteMuted] = useState<boolean>(true);
-
+  const endRef = useRef<HTMLDivElement>(null)
+   
+  useEffect(() => {
+    if (endRef.current) {
+      endRef.current.scrollLeft = endRef.current.scrollWidth;
+    }
+  }, [history]);
     useEffect(() => {
         async function playVideos() {
             try{
@@ -72,7 +76,7 @@ export function Mobile({ remoteVideo, remoteStream, camaraNotFound, win, loss, l
 
     <div className="h-14 bg-gray-900 border-t border-white/10 p-2">
       <div
-
+      ref={endRef}
         className="flex gap-2 overflow-x-auto h-full scrollbar-hide"
       >
         {history.filter((color: any) => color.color === "w" || color.color === "b").map((move: any, id: any) => (
@@ -90,6 +94,7 @@ export function Mobile({ remoteVideo, remoteStream, camaraNotFound, win, loss, l
 
         ))}
       </div>
+     
     </div>
     <div className="bg-gray-800/40 border flex justify-center gap-3 p-2 border-gray-700 rounded-lg">
 

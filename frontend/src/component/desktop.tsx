@@ -6,7 +6,7 @@ import GameNotification from "./player_left";
 import AestheticWin from "./win";
 import AestheticLoss from "./loss";
 import Toast from "./caramranotfound";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const chessPieces = [
     { letter: 'K', name: 'King', unicode: { white: '♔', black: '♚' } },
@@ -36,10 +36,14 @@ export function Desktop({
     const [isCamaraon, setIscamaraOn] = useState<boolean>(false);
 
     const [isMicOn, setIsMicOn] = useState(true);
-    
+    const historyRef = useRef<HTMLDivElement>(null);
    
     const [isRemoteMuted, setIsRemoteMuted] = useState<boolean>(true);
-
+    useEffect(()=>{
+        if(historyRef.current)[
+            historyRef.current.scrollTop = historyRef.current.scrollHeight
+        ]
+    },[history])
     useEffect(() => {
         async function playVideos() {
             try{
@@ -189,7 +193,7 @@ export function Desktop({
                         </div>
                     </div>
 
-                    <div className="overflow-y-auto no-scrollbar py-1 px-5 grid grid-cols-2 min-h-10 pb-6 max-h-50 w-full">
+                    <div ref={historyRef} className="overflow-y-auto no-scrollbar py-1 px-5 grid grid-cols-2 min-h-10 pb-6 max-h-50 w-full">
                         {history
                             .filter(move => move.color === "w" || move.color === "b")
                             .map((move, id) => (
