@@ -74,9 +74,9 @@ export function Desktop({
                 </div>
             </div>
             
-            <div className="overflow-y-auto no-scrollbar border flex p-3 flex-col gap-3 border-white/10 rounded-md h-[100%]">
+            <div className="overflow-y-auto no-scrollbar border flex p-3 flex-col gap-3 border-white/10 rounded-md h-full">
 
-                <div className="relative rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 shadow-2xl aspect-video">
+                <div className="relative rounded-2xl bg-linear-to-br from-slate-800 to-slate-900 border border-slate-700 shadow-2xl aspect-video">
                     
                     <video ref={localVideo} autoPlay muted playsInline className="w-full h-full object-cover" />
                     <div className="absolute top-2 left-2 bg-black/60 px-2 py-1 rounded text-xs text-white font-medium">
@@ -85,7 +85,7 @@ export function Desktop({
                 </div>
                 
          
-                <div className="relative rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 shadow-2xl aspect-video">
+                <div className="relative rounded-2xl bg-linear-to-br from-slate-800 to-slate-900 border border-slate-700 shadow-2xl aspect-video">
                   
                     <video 
                         ref={remoteVideo} 
