@@ -3,7 +3,7 @@ FROM oven/bun:1
 WORKDIR /app
 
 # Copy package files
-COPY package.json  ./
+COPY package.json  ./ bun.lockfile
 
 # Install dependencies
 RUN bun install --frozen-lockfile
@@ -15,4 +15,4 @@ COPY . .
 EXPOSE 8080
 
 # Run the application
-CMD ["bun", "run", "./src/index.ts"]
+CMD ["pm2-runtime", "start", "src/index.ts", "--interpreter", "bun"]
