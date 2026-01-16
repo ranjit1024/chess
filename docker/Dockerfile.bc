@@ -16,4 +16,4 @@ EXPOSE 8080
 
 # Run the application 
 RUN bun add -g pm2
-CMD ["pm2-runtime", "start", "ecosystem.config.ts"]
+CMD ["bun" , "/src/index.ts"]

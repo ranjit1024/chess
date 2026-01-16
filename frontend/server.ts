@@ -4,7 +4,8 @@ import { join } from "path";
 const distPath = join(import.meta.dir, "dist");
 
 serve({
-  port: 3000,
+  port: 8080,
+  
   async fetch(req) {
     const url = new URL(req.url);
     const path = url.pathname;
