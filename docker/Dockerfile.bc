@@ -15,5 +15,5 @@ COPY . .
 EXPOSE 8080
 
 # Run the application 
-RUN bun add -g pm2
-CMD ["bun" , "/src/index.ts"]
+
+CMD ["bun", "run", "/src/index.ts"]

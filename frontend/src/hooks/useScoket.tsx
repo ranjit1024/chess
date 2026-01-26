@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 // https://chess.ranjitdasproject.space/
+
 export function useSocket(onMessage: (msg: any) => void) {
   const socketRef = useRef<WebSocket | null>(null);
 
@@ -27,3 +28,4 @@ export function useSocket(onMessage: (msg: any) => void) {
 
   return { send, socketRef };
 }
+
