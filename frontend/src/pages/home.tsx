@@ -1,4 +1,4 @@
-import  { useState } from 'react';
+import { useState } from 'react';
 import { 
   Video, 
   Globe, 
@@ -6,224 +6,197 @@ import {
   Zap, 
   Play, 
   ChevronRight,
-  Users
+  Github,
+  Monitor
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const LandingPage = () => {
   const [isHovering, setIsHovering] = useState(false);
-  const route = useNavigate()
+  const route = useNavigate();
+
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-200 selection:bg-indigo-500/30 font-sans overflow-x-hidden">
+    <div className="min-h-screen bg-black text-zinc-300 selection:bg-zinc-100 selection:text-black font-sans overflow-x-hidden">
       
-      {/* --- Background Effects --- */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[40rem] h-[40rem] bg-indigo-900/20 rounded-full blur-[120px]" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40rem] h-[40rem] bg-violet-900/10 rounded-full blur-[120px]" />
-        <div className="absolute top-[20%] left-[50%] w-[60rem] h-[60rem] bg-blue-900/10 rounded-full blur-[120px] transform -translate-x-1/2" />
+      {/* --- Minimalist Grid Background --- */}
+      <div className="fixed inset-0 z-0 pointer-events-none flex justify-center">
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_10%,transparent_100%)]" />
       </div>
 
       {/* --- Navigation --- */}
-      <nav className="relative z-50 border-b border-white/5 bg-slate-950/50 backdrop-blur-xl">
+      <nav className="fixed top-0 w-full z-50 border-b border-white/5 bg-black/50 backdrop-blur-2xl">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-tr from-indigo-500 to-violet-500 rounded-lg flex items-center justify-center shadow-lg shadow-indigo-500/20">
-              <span className="font-bold text-white">C</span>
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-white rounded-sm flex items-center justify-center">
+              <span className="font-black text-black">G</span>
             </div>
-            <span className="font-semibold text-lg tracking-tight text-white">ChessMate</span>
+            <span className="font-bold text-xl tracking-tighter text-white uppercase">Grandmaster</span>
           </div>
        
-          <div className="flex items-center gap-4">
-           
-            <button onClick={()=>{
-              route("/game")
-            }} className="group relative px-4 py-2 bg-white text-slate-950 text-sm font-bold rounded-full hover:bg-indigo-50 transition-all flex items-center gap-2">
+          <div className="flex items-center gap-6">
+            <button 
+              onClick={() => route("/game")} 
+              className="group relative px-5 py-2.5 bg-white text-black text-sm font-bold rounded-sm hover:bg-zinc-200 transition-all flex items-center gap-2"
+            >
               Play Now
-              <ChevronRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+              <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
         </div>
       </nav>
 
       {/* --- Hero Section --- */}
-      <main className="relative z-10 pt-20 pb-32 max-w-7xl mx-auto px-6">
-        <div className="flex flex-col lg:flex-row items-center gap-16">
+      <main className="relative z-10 pt-32 pb-24 max-w-7xl mx-auto px-6">
+        <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
           
           {/* Hero Content */}
           <div className="flex-1 text-center lg:text-left space-y-8">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-medium mb-4">
+            <div className="inline-flex items-center gap-3 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-zinc-400 text-xs font-mono uppercase tracking-widest backdrop-blur-md">
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
               </span>
-              v2.0 Now Live: 1080p Video Calling
+              v2.0: 1080p Video Calling
             </div>
             
-            <h1 className="text-5xl lg:text-7xl font-bold tracking-tight text-white leading-[1.1]">
-              Chess is better <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-indigo-400 animate-gradient bg-300%">
-                Face to Face.
+            <h1 className="text-6xl lg:text-8xl font-black tracking-tighter text-white leading-[0.95]">
+              OVER THE <br />
+              BOARD. <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-600">
+                ONLINE.
               </span>
             </h1>
             
-            <p className="text-lg text-slate-400 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
-              Experience the psychological thrill of real over-the-board chess, online. 
-              See your opponent's reaction in real-time with low-latency WebRTC video.
+            <p className="text-lg text-zinc-400 max-w-xl mx-auto lg:mx-0 leading-relaxed font-light">
+              Experience the psychological thrill of face-to-face chess. 
+              Read your opponent's reactions in real-time with zero-latency WebRTC video streaming.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
-              <button onClick={()=>{
-                  route("/game")
-              }} className="w-full sm:w-auto px-8 py-4 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-semibold shadow-xl shadow-indigo-900/20 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2">
+              <button 
+                onClick={() => route("/game")} 
+                className="w-full sm:w-auto px-8 py-4 bg-white hover:bg-zinc-200 text-black rounded-sm font-bold transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+              >
                 <Play className="w-5 h-5 fill-current" />
                 Start Match
               </button>
-             
             </div>
             
-            <div className="flex items-center justify-center lg:justify-start gap-8 pt-8 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
-              <p className="text-xs font-mono text-slate-500">POWERED BY</p>
-              <div className="flex items-center gap-4">
-                <span className="text-slate-400 font-bold">React.js</span>
-                <span className="text-slate-400 font-bold">WebRTC</span>
-                <span className="text-slate-400 font-bold">WebSocket</span>
+            <div className="flex items-center justify-center lg:justify-start gap-6 pt-12 border-t border-white/5">
+              <p className="text-xs font-mono text-zinc-600 uppercase tracking-widest">Tech Stack</p>
+              <div className="flex items-center gap-6">
+                <span className="text-zinc-400 font-mono text-sm flex items-center gap-2"><Monitor className="w-4 h-4"/> React</span>
+                <span className="text-zinc-400 font-mono text-sm flex items-center gap-2"><Video className="w-4 h-4"/> WebRTC</span>
               </div>
             </div>
           </div>
 
-          {/* Hero Visual / Graphic */}
-          <div className="flex-1 relative w-full max-w-[600px] aspect-square">
-            {/* Abstract Board Representation */}
+          {/* Hero Visual / Glassmorphic Board */}
+          <div className="flex-1 relative w-full max-w-[500px] aspect-square">
             <div 
-              className="absolute inset-0 bg-slate-900 rounded-2xl border border-white/10 shadow-2xl rotate-3 hover:rotate-0 transition-transform duration-700 ease-out overflow-hidden"
+              className="absolute inset-0 bg-zinc-950 rounded-2xl border border-white/10 shadow-2xl transition-transform duration-700 ease-out overflow-hidden"
+              style={{ transform: isHovering ? 'perspective(1000px) rotateY(0deg) rotateX(0deg)' : 'perspective(1000px) rotateY(-15deg) rotateX(10deg)' }}
               onMouseEnter={() => setIsHovering(true)}
               onMouseLeave={() => setIsHovering(false)}
             >
-              {/* Grid Background */}
-              <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px]" />
+              <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:12.5%_12.5%]" />
               
-              {/* Floating UI Elements (Glassmorphism) */}
-              <div className="absolute top-6 left-6 right-6 flex justify-between items-start z-20">
-                {/* Opponent Video Card */}
-                <div className="w-32 h-24 bg-slate-800/80 backdrop-blur-md rounded-lg border border-white/10 shadow-lg flex flex-col items-center justify-center relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/60 z-10" />
-                  <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Opponent" className="absolute inset-0 w-full h-full object-cover opacity-80" />
-                  <div className="absolute bottom-2 left-2 z-20 flex items-center gap-1">
-                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                    <span className="text-[10px] text-white font-medium">GrandMaster_1</span>
+              {/* Glassmorphic Opponent Cam */}
+              <div className="absolute top-4 left-4 right-4 flex justify-between items-start z-20">
+                <div className="w-36 h-24 bg-black/60 backdrop-blur-xl rounded-lg border border-white/10 flex flex-col items-center justify-center relative overflow-hidden">
+                  <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Opponent" className="absolute inset-0 w-full h-full object-cover opacity-70 mix-blend-luminosity" />
+                  <div className="absolute bottom-2 left-2 z-20 flex items-center gap-2 bg-black/50 px-2 py-1 rounded backdrop-blur-md">
+                    <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
+                    <span className="text-[10px] text-white font-mono tracking-wider">GUEST_092</span>
                   </div>
                 </div>
 
-                {/* Timer */}
-                <div className="bg-slate-950/90 border border-white/10 px-4 py-2 rounded-lg text-xl font-mono text-white tracking-widest shadow-xl">
-                  09:43
+                <div className="bg-black/80 backdrop-blur-xl border border-white/10 px-3 py-1.5 rounded-md text-lg font-mono text-white tracking-widest">
+                  05:00
                 </div>
               </div>
 
-              {/* Chess Pieces (Stylized) */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="relative w-64 h-64 grid grid-cols-2 gap-1 opacity-90">
-                  <div className={`bg-indigo-500/20 rounded-lg backdrop-blur-sm border border-indigo-500/30 transition-all duration-500 ${isHovering ? 'translate-y-4' : ''}`} />
-                  <div className="bg-slate-800/50 rounded-lg backdrop-blur-sm border border-white/5" />
-                  <div className="bg-slate-800/50 rounded-lg backdrop-blur-sm border border-white/5" />
-                  <div className={`bg-white/10 rounded-lg backdrop-blur-sm border border-white/20 transition-all duration-500 delay-75 ${isHovering ? '-translate-y-4' : ''}`} />
-                </div>
-              </div>
-
-              {/* Your Video Card (Bottom Right) */}
-              <div className="absolute bottom-6 right-6 w-24 h-32 bg-slate-800/80 backdrop-blur-md rounded-lg border border-white/10 shadow-2xl overflow-hidden z-20 transform transition-transform hover:scale-110">
-                 <div className="absolute inset-0 bg-slate-700 flex items-center justify-center">
-                    <Video className="w-6 h-6 text-slate-500" />
+              {/* Your Cam */}
+              <div className="absolute bottom-4 right-4 w-28 h-36 bg-black/80 backdrop-blur-xl rounded-lg border border-white/10 overflow-hidden z-20 transition-transform hover:scale-105">
+                 <div className="absolute inset-0 bg-zinc-900 flex items-center justify-center">
+                    <Video className="w-6 h-6 text-zinc-600" />
                  </div>
-                 <div className="absolute bottom-2 left-0 right-0 text-center">
-                    <span className="text-[9px] text-slate-400">You</span>
+                 <div className="absolute bottom-2 left-2 bg-black/50 px-2 py-1 rounded backdrop-blur-md">
+                    <span className="text-[10px] text-white font-mono">YOU</span>
                  </div>
               </div>
             </div>
             
-            {/* Decorative Glow behind the board */}
-            <div className="absolute -inset-4 bg-indigo-500/30 blur-3xl -z-10 rounded-full opacity-50" />
+            <div className="absolute -inset-10 bg-white/5 blur-[100px] -z-10 rounded-full" />
           </div>
         </div>
       </main>
 
-      {/* --- Features Grid (Bento Style) --- */}
-      <section className="relative z-10 py-24 max-w-7xl mx-auto px-6">
-        <div className="mb-12">
-          <h2 className="text-3xl font-bold text-white mb-4">Engineered for Competitors</h2>
-          <p className="text-slate-400">Everything you need to focus on the game.</p>
+      {/* --- High-Contrast Bento Grid --- */}
+      <section className="relative z-10 py-32 max-w-7xl mx-auto px-6">
+        <div className="mb-16">
+          <h2 className="text-4xl font-black text-white tracking-tighter uppercase mb-4">Built for Competitors.</h2>
+          <p className="text-zinc-400 font-mono text-sm max-w-md">Absolute precision. Zero distractions. Engineered specifically for high-stakes matches.</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Card 1: Large */}
-          <div className="md:col-span-2 p-8 rounded-3xl bg-slate-900/50 border border-white/5 hover:border-indigo-500/30 transition-colors group relative overflow-hidden">
-             <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
-                <Video className="w-32 h-32" />
-             </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* Main Feature */}
+          <div className="md:col-span-2 p-10 rounded-xl bg-zinc-950 border border-white/10 hover:border-white/30 transition-all group relative overflow-hidden">
              <div className="relative z-10">
-               <div className="w-12 h-12 bg-indigo-500/20 rounded-xl flex items-center justify-center mb-6 text-indigo-400">
-                 <Video className="w-6 h-6" />
-               </div>
-               <h3 className="text-xl font-bold text-white mb-2">WebRTC Video & Audio</h3>
-               <p className="text-slate-400 max-w-md">
-                 Connect instantly with peer-to-peer streaming. No plugins, no downloads. Just crystal clear video directly in your browser while you checkmate.
+               <Video className="w-8 h-8 text-white mb-6" />
+               <h3 className="text-2xl font-bold text-white mb-3 tracking-tight">P2P Video Streaming</h3>
+               <p className="text-zinc-400 max-w-md leading-relaxed">
+                 Direct peer-to-peer WebRTC connections bypass heavy routing. Experience raw, uncompressed video feeds of your opponent's micro-expressions.
                </p>
+             </div>
+             <div className="absolute -right-10 -bottom-10 opacity-5 group-hover:opacity-10 transition-opacity transform group-hover:scale-110 duration-500">
+               <Video className="w-64 h-64 text-white" />
              </div>
           </div>
 
-          {/* Card 2: Tall */}
-          <div className="row-span-2 p-8 rounded-3xl bg-slate-900/50 border border-white/5 hover:border-emerald-500/30 transition-colors relative overflow-hidden group">
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-emerald-900/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-            <div className="w-12 h-12 bg-emerald-500/20 rounded-xl flex items-center justify-center mb-6 text-emerald-400">
-              <Shield className="w-6 h-6" />
-            </div>
-            <h3 className="text-xl font-bold text-white mb-2">Cheat Detection</h3>
-            <p className="text-slate-400 mb-8">
-              Advanced heuristics and server-side analysis ensure fair play in every match.
+          {/* Tall Feature */}
+          <div className="row-span-2 p-10 rounded-xl bg-zinc-950 border border-white/10 hover:border-white/30 transition-all relative overflow-hidden group">
+            <Shield className="w-8 h-8 text-white mb-6" />
+            <h3 className="text-2xl font-bold text-white mb-3 tracking-tight">Engine Analysis</h3>
+            <p className="text-zinc-400 mb-10 leading-relaxed">
+              Server-side heuristics running in the background to ensure absolute fair play.
             </p>
-            <div className="space-y-3">
+            <div className="space-y-4">
               {[1, 2, 3].map((_, i) => (
-                <div key={i} className="h-2 bg-emerald-500/20 rounded-full w-full overflow-hidden">
-                  <div className="h-full bg-emerald-500/50 w-[70%]" style={{ width: `${80 - (i * 15)}%` }} />
+                <div key={i} className="h-1 bg-white/10 w-full overflow-hidden">
+                  <div className="h-full bg-white w-[70%]" style={{ width: `${80 - (i * 20)}%` }} />
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Card 3: Standard */}
-          <div className="p-8 rounded-3xl bg-slate-900/50 border border-white/5 hover:border-purple-500/30 transition-colors">
-            <div className="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center mb-6 text-purple-400">
-              <Zap className="w-6 h-6" />
-            </div>
-            <h3 className="text-xl font-bold text-white mb-2">Low Latency</h3>
-            <p className="text-slate-400 text-sm">
-              <span className="text-white font-mono">15ms</span> average move time via WebSocket edge networks.
+          <div className="p-10 rounded-xl bg-zinc-950 border border-white/10 hover:border-white/30 transition-all">
+            <Zap className="w-8 h-8 text-white mb-6" />
+            <h3 className="text-xl font-bold text-white mb-2 tracking-tight">15ms Latency</h3>
+            <p className="text-zinc-400 text-sm leading-relaxed">
+              Moves are broadcasted via edge-network WebSockets for instantaneous board updates.
             </p>
           </div>
 
-          {/* Card 4: Standard */}
-          <div className="p-8 rounded-3xl bg-slate-900/50 border border-white/5 hover:border-pink-500/30 transition-colors">
-            <div className="w-12 h-12 bg-pink-500/20 rounded-xl flex items-center justify-center mb-6 text-pink-400">
-              <Globe className="w-6 h-6" />
-            </div>
-            <h3 className="text-xl font-bold text-white mb-2">Global Matchmaking</h3>
-            <p className="text-slate-400 text-sm">
-              Find opponents at your skill level in seconds, from anywhere in the world.
+          <div className="p-10 rounded-xl bg-zinc-950 border border-white/10 hover:border-white/30 transition-all">
+            <Globe className="w-8 h-8 text-white mb-6" />
+            <h3 className="text-xl font-bold text-white mb-2 tracking-tight">Global State</h3>
+            <p className="text-zinc-400 text-sm leading-relaxed">
+              Distributed matchmaking ensures you find a rated opponent instantly, anywhere.
             </p>
           </div>
         </div>
       </section>
 
       {/* --- Footer --- */}
-      <footer className="border-t border-white/5 mt-20 bg-slate-950">
+      <footer className="border-t border-white/10 bg-black">
         <div className="max-w-7xl mx-auto px-6 py-12 flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="text-slate-500 text-sm">
-            © 2026 ChessMate Inc. All rights reserved.
+          <div className="text-zinc-500 text-sm font-mono">
+            © 2026 GRANDMASTER. PUNE, INDIA.
           </div>
-          <div className="flex gap-6 text-slate-500">
-            <Users className="w-5 h-5 hover:text-white cursor-pointer transition-colors" />
+          <div className="flex gap-6 text-zinc-500">
+            <Github className="w-5 h-5 hover:text-white cursor-pointer transition-colors" />
             <Globe className="w-5 h-5 hover:text-white cursor-pointer transition-colors" />
-            <div className="w-5 h-5 bg-slate-800 rounded-full hover:bg-white cursor-pointer transition-colors" />
           </div>
         </div>
       </footer>
